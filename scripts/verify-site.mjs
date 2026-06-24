@@ -102,7 +102,7 @@ const postHtml = await routeHtml("post", ["blog", "wonder-tinker-start", "index.
 ])
 assertBlogPostingJsonLd(postHtml, {
   headline: "Wonder Tinker",
-  url: "https://wonder-tinker.github.io/blog/wonder-tinker-start/",
+  url: "https://wonderrabbit.github.io/blog/wonder-tinker-start/",
   category: "Site notes",
 })
 const windowsPostHtml = await routeHtml("windows dGPU post", ["blog", "windows10-disable-dgpu-for-general-apps", "index.html"], [
@@ -115,7 +115,7 @@ const windowsPostHtml = await routeHtml("windows dGPU post", ["blog", "windows10
 ])
 assertBlogPostingJsonLd(windowsPostHtml, {
   headline: "Windows 10",
-  url: "https://wonder-tinker.github.io/blog/windows10-disable-dgpu-for-general-apps/",
+  url: "https://wonderrabbit.github.io/blog/windows10-disable-dgpu-for-general-apps/",
   category: "Windows 운영",
 })
 
@@ -131,20 +131,19 @@ assert(!/^\s*broken\s*$/i.test(rss), "RSS appears corrupted.")
 const sitemapPath = (await exists(filePath("sitemap-index.xml"))) ? await assertFile("sitemap-index.xml") : await assertFile("sitemap.xml")
 const sitemap = await readText(sitemapPath)
 assertMatches("sitemap", sitemap, /<sitemapindex\b|<urlset\b|<loc>/i)
-assertMatches("sitemap", sitemap, /wonder-tinker\.github\.io/)
-assert(!/wonderrabbit\.github\.io/i.test(sitemap), "Sitemap contains the old GitHub Pages owner domain.")
+assertMatches("sitemap", sitemap, /wonderrabbit\.github\.io/)
+assert(!/wonder-tinker\.github\.io/i.test(sitemap), "Sitemap contains the old GitHub Pages domain.")
 assert(!/github\.io\/wonder-tinker\.github\.io\//i.test(sitemap), "Sitemap contains the old project base path.")
 
 const robots = await readText(await assertFile("robots.txt"))
 assertMatches("robots", robots, /User-agent:\s*\*/i)
-assertMatches("robots", robots, /Sitemap:\s*https:\/\/wonder-tinker\.github\.io\/sitemap-index\.xml/i)
-assert(!/wonderrabbit\.github\.io/i.test(robots), "Robots contains the old GitHub Pages owner domain.")
+assertMatches("robots", robots, /Sitemap:\s*https:\/\/wonderrabbit\.github\.io\/sitemap-index\.xml/i)
+assert(!/wonder-tinker\.github\.io/i.test(robots), "Robots contains the old GitHub Pages domain.")
 assert(!/github\.io\/wonder-tinker\.github\.io\//i.test(robots), "Robots contains the old project base path.")
 
-const cname = (await readText(await assertFile("CNAME"))).trim()
-assert(cname === "wonder-tinker.github.io", "CNAME must pin the root Pages domain.")
+assert(!(await exists(filePath("CNAME"))), "User Pages deployment must not include an obsolete custom-domain CNAME.")
 
 console.log(`site_verified: ${root}`)
 console.log("routes: home blog post editorial-policy privacy 404")
-console.log("feeds: rss sitemap robots cname")
+console.log("feeds: rss sitemap robots")
 console.log("metadata: BlogPosting JSON-LD AI disclosure source notes")

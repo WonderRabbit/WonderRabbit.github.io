@@ -1,12 +1,12 @@
 # GitHub Pages Web & AI 블로그 설치 및 운영 계획
 
 작성일: 2026-06-24
-대상 저장소: `WonderRabbit/wonder-tinker.github.io`
+대상 저장소: `WonderRabbit/WonderRabbit.github.io`
 권장 결론: `Astro + MDX + GitHub Actions Pages 배포`
 
 ## 1. 결론
 
-이 저장소는 원격이 `https://github.com/WonderRabbit/wonder-tinker.github.io`로 잡혀 있고 아직 커밋과 사이트 스캐폴드가 없는 초기 상태다. 따라서 마이그레이션이 아니라 첫 커밋에서 사이트 계약을 확정하는 방식으로 시작해야 한다.
+이 저장소는 원격이 `https://github.com/WonderRabbit/WonderRabbit.github.io`로 잡혀 있고 아직 커밋과 사이트 스캐폴드가 없는 초기 상태다. 따라서 마이그레이션이 아니라 첫 커밋에서 사이트 계약을 확정하는 방식으로 시작해야 한다.
 
 권장 스택은 `Astro`다. 이유는 GitHub Pages 공식 배포 가이드가 있고, Markdown/MDX 콘텐츠, typed content collections, RSS, sitemap, 이미지 처리, 정적 빌드가 블로그 운영 요구와 잘 맞기 때문이다. GitHub Pages는 정적 HTML/CSS/JS를 저장소에서 서빙하거나 빌드 후 배포하는 서비스이고, 비-Jekyll 빌드나 전용 산출물 브랜치를 피하려면 GitHub Actions 배포가 권장된다. [S1], [S2], [S6]
 
@@ -47,7 +47,7 @@
 - `@astrojs/sitemap`: canonical URL 목록을 빌드에서 자동 생성한다. [S7]
 - `src/pages/404.astro`: GitHub Pages의 정적 404 페이지로 사용한다.
 
-이 저장소의 최종 GitHub Pages 도메인은 `https://wonder-tinker.github.io/`다. 따라서 root user/org Pages 형태로 배포되도록 `site: "https://wonder-tinker.github.io"`를 사용하고 `base`는 설정하지 않는다. owner 하위 project Pages 경로는 이 저장소의 배포 도메인이 아니다. [S1], [S4], [S17]
+이 저장소의 최종 GitHub Pages 도메인은 `https://wonderrabbit.github.io/`다. 따라서 root user/org Pages 형태로 배포되도록 `site: "https://wonderrabbit.github.io"`를 사용하고 `base`는 설정하지 않는다. owner 하위 project Pages 경로는 이 저장소의 배포 도메인이 아니다. [S1], [S4], [S17]
 
 ## 3. 설치 계획
 
@@ -75,7 +75,7 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://wonder-tinker.github.io",
+  site: "https://wonderrabbit.github.io",
   trailingSlash: "always",
   integrations: [mdx(), sitemap()],
 });
@@ -263,7 +263,7 @@ jobs:
 - RSS, sitemap, robots.txt
 - GitHub Pages deploy workflow
 - `docs/editorial-policy.md`, `docs/privacy.md`
-- 샘플 글 1개: “Wonder Tinker 시작 기록” at `https://wonder-tinker.github.io/blog/wonder-tinker-start/`
+- 샘플 글 1개: “Wonder Tinker 시작 기록” at `https://wonderrabbit.github.io/blog/wonder-tinker-start/`
 
 완료 기준:
 
