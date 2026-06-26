@@ -68,8 +68,9 @@ const endpointChecks = [
 const pageChecks = [
   ["/", "home.png", /Wonder Tinker/i],
   ["/blog/", "blog.png", /Blog/i],
-  ["/blog/wonder-tinker-start/", "post-wonder-tinker-start.png", /AI and source notes/i],
+  ["/blog/wonder-tinker-start/", "post-wonder-tinker-start.png", /Sources/i],
   ["/blog/windows10-disable-dgpu-for-general-apps/", "post-windows10-disable-dgpu-for-general-apps.png", /Windows 운영/i],
+  ["/blog/windows10-lazyvim-disable-treesitter/", "post-windows10-lazyvim-disable-treesitter.png", /PowerShell 7\.6/i],
   ["/editorial-policy/", "editorial-policy.png", /Editorial Policy/i],
   ["/privacy/", "privacy.png", /Privacy/i],
   ["/404.html", "404.png", /404/i],
@@ -144,8 +145,16 @@ async function assertDisclosureMetadata(page) {
   )
   assert(jsonLd.some((entry) => entry["@type"] === "BlogPosting"), "Post lacks BlogPosting JSON-LD.")
   await page.getByText("AI-assisted").first().waitFor({ state: "visible", timeout: 5000 })
-  await page.getByText("GPT-5 Codex").first().waitFor({ state: "visible", timeout: 5000 })
   await page.getByText("Sources").first().waitFor({ state: "visible", timeout: 5000 })
+}
+
+async function assertNoModelInfo(page, label) {
+  const body = await page.textContent("body")
+  const html = await page.content()
+  for (const pattern of [/GPT-[0-9]+\s+Codex/i, /human\s*review/i, /AI\s+and\s+source\s+notes/i, /model\s*notes/i]) {
+    assert(!pattern.test(body ?? ""), `${label} body unexpectedly matched ${pattern}.`)
+    assert(!pattern.test(html), `${label} html unexpectedly matched ${pattern}.`)
+  }
 }
 
 async function assertWindowsPostMetadata(page) {
@@ -153,7 +162,14 @@ async function assertWindowsPostMetadata(page) {
   await page.getByText("GPU routing").first().waitFor({ state: "visible", timeout: 5000 })
   await page.getByText("DXGI_GPU_PREFERENCE").first().waitFor({ state: "visible", timeout: 5000 })
   await page.getByText("nvidia-smi pmon").first().waitFor({ state: "visible", timeout: 5000 })
-  await page.getByText("AI and source notes").first().waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("Sources").first().waitFor({ state: "visible", timeout: 5000 })
+}
+
+async function assertLazyVimPostMetadata(page) {
+  for (const text of ["Windows 10", "PowerShell 7.6", "LazyVim", "Neovim", "nvim-treesitter"]) {
+    await page.getByText(text).first().waitFor({ state: "visible", timeout: 5000 })
+  }
+  await page.getByText("Sources").first().waitFor({ state: "visible", timeout: 5000 })
 }
 
 await mkdir(screenshotRoot, { recursive: true })
@@ -217,6 +233,12 @@ try {
     }
     if (path === "/blog/windows10-disable-dgpu-for-general-apps/") {
       await assertWindowsPostMetadata(page)
+    }
+    if (path === "/blog/windows10-lazyvim-disable-treesitter/") {
+      await assertLazyVimPostMetadata(page)
+    }
+    if (path.startsWith("/blog/")) {
+      await assertNoModelInfo(page, path)
     }
     await page.addScriptTag({ content: axe.source })
     const axeResult = await page.evaluate(async () => window.axe.run(document, {

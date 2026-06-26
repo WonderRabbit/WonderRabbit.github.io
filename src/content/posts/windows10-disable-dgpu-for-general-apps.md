@@ -11,10 +11,6 @@ tags:
   - DXGI_GPU_PREFERENCE
   - nvidia-smi pmon
 aiAssisted: true
-modelNotes:
-  - model: "GPT-5 Codex"
-    role: "Reworked the local troubleshooting guide into a developer-tone blog post and kept the diagnostic order, commands, and source list traceable."
-    humanReview: "The local source document was treated as the source of record; the post was rewritten for publication instead of copied verbatim."
 sources:
   - title: "Microsoft Learn, DXGI_GPU_PREFERENCE enumeration"
     url: "https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_6/ne-dxgi1_6-dxgi_gpu_preference"

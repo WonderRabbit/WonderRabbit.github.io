@@ -11,10 +11,6 @@ tags:
   - Coding agent
   - KV cache
 aiAssisted: true
-modelNotes:
-  - model: "GPT-5 Codex"
-    role: "Reworked the prior ultraresearch synthesis into a Korean model-user guide, refreshed official Ollama and OpenCode source checks, and prepared local/deploy verification steps."
-    humanReview: "The post keeps model IDs, commands, URLs, and recommendation percentages traceable to the research notes and official pages; percentages are framed as practical recommendations rather than benchmark scores."
 sources:
   - title: "Ollama docs, OpenCode integration"
     url: "https://docs.ollama.com/integrations/opencode"

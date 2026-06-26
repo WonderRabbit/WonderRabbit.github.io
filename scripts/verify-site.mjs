@@ -45,6 +45,22 @@ const assertMatches = (label, text, pattern) => {
   assert(pattern.test(text), `${label} did not match ${pattern}`)
 }
 
+const assertDoesNotMatch = (label, text, pattern) => {
+  assert(!pattern.test(text), `${label} unexpectedly matched ${pattern}`)
+}
+
+const assertNoModelInfo = (label, text) => {
+  const forbiddenRenderedPatterns = [
+    /GPT-[0-9]+\s+Codex/i,
+    /human\s*review/i,
+    /AI\s+and\s+source\s+notes/i,
+  ]
+
+  for (const pattern of forbiddenRenderedPatterns) {
+    assertDoesNotMatch(label, text, pattern)
+  }
+}
+
 const routeHtml = async (label, parts, patterns) => {
   const path = await assertFile(...parts)
   const text = await readText(path)
@@ -90,16 +106,26 @@ function assertBlogPostingJsonLd(postHtml, expected) {
 }
 
 const homeHtml = await routeHtml("home", ["index.html"], [/Wonder Tinker/, /Web and AI/, /Recent posts/])
-assertMatches("home", homeHtml, /wonder-tinker-start/)
 assertMatches("home", homeHtml, /windows10-disable-dgpu-for-general-apps/)
+assertMatches("home", homeHtml, /windows10-lazyvim-disable-treesitter/)
+assertNoModelInfo("home", homeHtml)
 
-await routeHtml("blog", ["blog", "index.html"], [/Blog/, /wonder-tinker-start/, /windows10-disable-dgpu-for-general-apps/, /Windows 운영/, /AI-assisted/])
+const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
+  /Blog/,
+  /wonder-tinker-start/,
+  /windows10-disable-dgpu-for-general-apps/,
+  /windows10-lazyvim-disable-treesitter/,
+  /Windows 운영/,
+  /Windows 개발 환경/,
+  /AI-assisted/,
+])
+assertNoModelInfo("blog", blogHtml)
 const postHtml = await routeHtml("post", ["blog", "wonder-tinker-start", "index.html"], [
   /AI-assisted/,
-  /AI and source notes/,
-  /GPT-5 Codex/,
+  /Sources/,
   /Astro content collections guide/,
 ])
+assertNoModelInfo("post", postHtml)
 assertBlogPostingJsonLd(postHtml, {
   headline: "Wonder Tinker",
   url: "https://wonderrabbit.github.io/blog/wonder-tinker-start/",
@@ -111,12 +137,35 @@ const windowsPostHtml = await routeHtml("windows dGPU post", ["blog", "windows10
   /GPU routing/,
   /DXGI_GPU_PREFERENCE/,
   /nvidia-smi pmon/,
-  /AI and source notes/,
+  /Sources/,
 ])
+assertNoModelInfo("windows dGPU post", windowsPostHtml)
 assertBlogPostingJsonLd(windowsPostHtml, {
   headline: "Windows 10",
   url: "https://wonderrabbit.github.io/blog/windows10-disable-dgpu-for-general-apps/",
   category: "Windows 운영",
+})
+const lazyvimPostHtml = await routeHtml(
+  "LazyVim Tree-sitter post",
+  ["blog", "windows10-lazyvim-disable-treesitter", "index.html"],
+  [
+    /Windows 10/,
+    /PowerShell 7\.6/,
+    /Neovim/,
+    /LazyVim/,
+    /nvim-treesitter/,
+    /Tree-sitter/,
+    /Sources/,
+    /LazyVim Configuration/,
+    /nvim-treesitter README/,
+  ],
+)
+assertNoModelInfo("LazyVim Tree-sitter post", lazyvimPostHtml)
+assertDoesNotMatch("LazyVim Tree-sitter post", lazyvimPostHtml, /model\s*notes/i)
+assertBlogPostingJsonLd(lazyvimPostHtml, {
+  headline: "Windows 10 LazyVim",
+  url: "https://wonderrabbit.github.io/blog/windows10-lazyvim-disable-treesitter/",
+  category: "Windows 개발 환경",
 })
 
 await routeHtml("editorial policy", ["editorial-policy", "index.html"], [/AI/, /disclos|공개|출처/i])
@@ -144,6 +193,6 @@ assert(!/github\.io\/wonder-tinker\.github\.io\//i.test(robots), "Robots contain
 assert(!(await exists(filePath("CNAME"))), "User Pages deployment must not include an obsolete custom-domain CNAME.")
 
 console.log(`site_verified: ${root}`)
-console.log("routes: home blog post editorial-policy privacy 404")
+console.log("routes: home blog post lazyvim-post editorial-policy privacy 404")
 console.log("feeds: rss sitemap robots")
-console.log("metadata: BlogPosting JSON-LD AI disclosure source notes")
+console.log("metadata: BlogPosting JSON-LD AI disclosure sources")

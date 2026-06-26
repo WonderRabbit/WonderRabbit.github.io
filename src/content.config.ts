@@ -8,12 +8,6 @@ const sourceSchema = z.object({
   accessed: z.coerce.date(),
 })
 
-const modelNoteSchema = z.object({
-  model: z.string().min(1),
-  role: z.string().min(1),
-  humanReview: z.string().min(1),
-})
-
 const posts = defineCollection({
   loader: glob({ base: "./src/content/posts", pattern: "**/*.{md,mdx}" }),
   schema: z.object({
@@ -25,7 +19,6 @@ const posts = defineCollection({
     category: z.string().min(1),
     tags: z.array(z.string().min(1)).min(1),
     aiAssisted: z.boolean(),
-    modelNotes: z.array(modelNoteSchema).min(1),
     sources: z.array(sourceSchema).min(1),
   }),
 })
@@ -40,17 +33,4 @@ const pages = defineCollection({
   }),
 })
 
-const aiNotes = defineCollection({
-  loader: glob({ base: "./src/content/ai-notes", pattern: "**/*.{md,mdx}" }),
-  schema: z.object({
-    title: z.string().min(1),
-    description: z.string().min(1),
-    captured: z.coerce.date(),
-    model: z.string().min(1),
-    task: z.string().min(1),
-    disclosure: z.string().min(1),
-    sources: z.array(sourceSchema).min(1),
-  }),
-})
-
-export const collections = { posts, pages, aiNotes }
+export const collections = { posts, pages }

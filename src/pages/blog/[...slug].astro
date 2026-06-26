@@ -88,20 +88,8 @@ const jsonLd = JSON.stringify(blogPosting).replaceAll("<", "\\u003c")
         <Content />
       </div>
 
-      <section class="meta-panel" aria-labelledby="ai-notes-heading">
-        <h2 id="ai-notes-heading">AI and source notes</h2>
-        <div class="note-grid">
-          {
-            post.data.modelNotes.map((note) => (
-              <article>
-                <h3>{note.model}</h3>
-                <p>{note.role}</p>
-                <p>{note.humanReview}</p>
-              </article>
-            ))
-          }
-        </div>
-        <h3>Sources</h3>
+      <section class="meta-panel" aria-labelledby="sources-heading">
+        <h2 id="sources-heading">Sources</h2>
         <ul class="source-list">
           {
             post.data.sources.map((source) => (
