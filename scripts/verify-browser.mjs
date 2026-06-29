@@ -58,6 +58,7 @@ const endpointChecks = [
   ["/blog/", /wonder-tinker-start|windows10-disable-dgpu-for-general-apps|Blog|블로그/i],
   ["/blog/wonder-tinker-start/", /BlogPosting|AI|Wonder/i],
   ["/blog/windows10-disable-dgpu-for-general-apps/", /Windows 10|Windows 운영|GPU routing|DXGI_GPU_PREFERENCE/i],
+  ["/blog/my-git-pretty/", /내 git 예쁘게 꾸미기|GitHub 운영|README|Shields\.io/i],
   ["/rss.xml", /<rss|feed|channel/i],
   ["/robots.txt", /User-agent|Sitemap/i],
   ["/editorial-policy/", /AI|disclos|공개|출처/i],
@@ -71,6 +72,7 @@ const pageChecks = [
   ["/blog/wonder-tinker-start/", "post-wonder-tinker-start.png", /Sources/i],
   ["/blog/windows10-disable-dgpu-for-general-apps/", "post-windows10-disable-dgpu-for-general-apps.png", /Windows 운영/i],
   ["/blog/windows10-lazyvim-disable-treesitter/", "post-windows10-lazyvim-disable-treesitter.png", /PowerShell 7\.6/i],
+  ["/blog/my-git-pretty/", "post-my-git-pretty.png", /내 git 예쁘게 꾸미기/i],
   ["/editorial-policy/", "editorial-policy.png", /Editorial Policy/i],
   ["/privacy/", "privacy.png", /Privacy/i],
   ["/404.html", "404.png", /404/i],
@@ -172,6 +174,15 @@ async function assertLazyVimPostMetadata(page) {
   await page.getByText("Sources").first().waitFor({ state: "visible", timeout: 5000 })
 }
 
+async function assertGitPrettyPostMetadata(page) {
+  for (const text of ["GitHub 운영", "GitHub", "README", "Markdown", "오픈소스"]) {
+    await page.getByText(text).first().waitFor({ state: "visible", timeout: 5000 })
+  }
+  await page.getByRole("heading", { name: "Sources" }).waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("GitHub Docs, About READMEs").first().waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("Shields.io, Endpoint badges").first().waitFor({ state: "visible", timeout: 5000 })
+}
+
 await mkdir(screenshotRoot, { recursive: true })
 
 const endpointResults = []
@@ -236,6 +247,9 @@ try {
     }
     if (path === "/blog/windows10-lazyvim-disable-treesitter/") {
       await assertLazyVimPostMetadata(page)
+    }
+    if (path === "/blog/my-git-pretty/") {
+      await assertGitPrettyPostMetadata(page)
     }
     if (path.startsWith("/blog/")) {
       await assertNoModelInfo(page, path)

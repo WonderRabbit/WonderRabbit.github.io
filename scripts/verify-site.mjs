@@ -106,7 +106,8 @@ function assertBlogPostingJsonLd(postHtml, expected) {
 }
 
 const homeHtml = await routeHtml("home", ["index.html"], [/Wonder Tinker/, /Web and AI/, /Recent posts/])
-assertMatches("home", homeHtml, /windows10-disable-dgpu-for-general-apps/)
+assertMatches("home", homeHtml, /my-git-pretty/)
+assertMatches("home", homeHtml, /ollama-opencode-local-models-under-20gb/)
 assertMatches("home", homeHtml, /windows10-lazyvim-disable-treesitter/)
 assertNoModelInfo("home", homeHtml)
 
@@ -115,8 +116,10 @@ const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
   /wonder-tinker-start/,
   /windows10-disable-dgpu-for-general-apps/,
   /windows10-lazyvim-disable-treesitter/,
+  /my-git-pretty/,
   /Windows 운영/,
   /Windows 개발 환경/,
+  /GitHub 운영/,
   /AI-assisted/,
 ])
 assertNoModelInfo("blog", blogHtml)
@@ -167,6 +170,20 @@ assertBlogPostingJsonLd(lazyvimPostHtml, {
   url: "https://wonderrabbit.github.io/blog/windows10-lazyvim-disable-treesitter/",
   category: "Windows 개발 환경",
 })
+const gitPrettyPostHtml = await routeHtml("GitHub README post", ["blog", "my-git-pretty", "index.html"], [
+  /내 git 예쁘게 꾸미기/,
+  /GitHub 운영/,
+  /README/,
+  /Sources/,
+  /GitHub Docs, About READMEs/,
+  /Shields\.io, Endpoint badges/,
+])
+assertNoModelInfo("GitHub README post", gitPrettyPostHtml)
+assertBlogPostingJsonLd(gitPrettyPostHtml, {
+  headline: "내 git 예쁘게 꾸미기",
+  url: "https://wonderrabbit.github.io/blog/my-git-pretty/",
+  category: "GitHub 운영",
+})
 
 await routeHtml("editorial policy", ["editorial-policy", "index.html"], [/AI/, /disclos|공개|출처/i])
 await routeHtml("privacy", ["privacy", "index.html"], [/analytics/i, /tracking/i, /privacy/i])
@@ -193,6 +210,6 @@ assert(!/github\.io\/wonder-tinker\.github\.io\//i.test(robots), "Robots contain
 assert(!(await exists(filePath("CNAME"))), "User Pages deployment must not include an obsolete custom-domain CNAME.")
 
 console.log(`site_verified: ${root}`)
-console.log("routes: home blog post lazyvim-post editorial-policy privacy 404")
+console.log("routes: home blog post lazyvim-post my-git-pretty editorial-policy privacy 404")
 console.log("feeds: rss sitemap robots")
 console.log("metadata: BlogPosting JSON-LD AI disclosure sources")

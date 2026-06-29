@@ -2,6 +2,7 @@ node_modules/
 dist/
 .astro
 .omo/
+output/
 .DS_Store
 npm-debug.log*
 pnpm-debug.log*
