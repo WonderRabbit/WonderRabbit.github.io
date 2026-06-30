@@ -12,6 +12,17 @@
   }
 }
 
+@media (min-width: 960px) {
+  .blog-browser {
+    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  }
+
+  .category-tree {
+    position: sticky;
+    top: calc(64px + var(--space-5));
+  }
+}
+
 @media (max-width: 767px) {
   .site-shell {
     width: min(100% - (var(--space-4) * 2), 1120px);
@@ -32,6 +43,10 @@
   .masthead {
     min-height: auto;
     padding-bottom: var(--space-8);
+  }
+
+  .category-tree [role="group"] {
+    padding-left: var(--space-3);
   }
 }
 

@@ -1,18 +1,21 @@
 :root {
-  color-scheme: light;
-  --surface-primary: #fbfbfa;
-  --surface-secondary: #ffffff;
-  --surface-muted: #f4f2ed;
-  --text-primary: #1d1d1b;
-  --text-secondary: #696760;
-  --text-tertiary: #5d5a53;
-  --border-default: #e7e2d8;
-  --border-subtle: #f0ede6;
-  --accent-primary: #244c7a;
-  --accent-hover: #183b63;
-  --status-info: #e5eef7;
-  --status-success: #e9f1e7;
-  --status-warning: #f8efd8;
+  color-scheme: dark;
+  --surface-primary: #1e1e2e;
+  --surface-secondary: #181825;
+  --surface-muted: #313244;
+  --surface-raised: #45475a;
+  --text-primary: #cdd6f4;
+  --text-secondary: #bac2de;
+  --text-tertiary: #a6adc8;
+  --border-default: #45475a;
+  --border-subtle: #313244;
+  --accent-primary: #89b4fa;
+  --accent-hover: #cba6f7;
+  --accent-secondary: #b4befe;
+  --status-info: #1f344f;
+  --status-success: #203c31;
+  --status-warning: #493a1f;
+  --status-error: #4a2634;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -23,7 +26,7 @@
   --space-10: 40px;
   --space-12: 48px;
   --space-16: 64px;
-  font-family: "Avenir Next", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Atkinson Hyperlegible", Pretendard, "Noto Sans KR", system-ui, sans-serif;
   background: var(--surface-primary);
   color: var(--text-primary);
 }
@@ -47,8 +50,8 @@ body {
   min-height: 100dvh;
   color: var(--text-primary);
   background:
-    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px),
-    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--border-subtle) 64%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--border-subtle) 64%, transparent) 1px, transparent 1px),
     var(--surface-primary);
   background-size: 64px 64px;
   font-size: 16px;
@@ -85,6 +88,7 @@ p {
 h1 {
   max-width: 720px;
   margin-bottom: var(--space-5);
+  font-family: Fraunces, Charter, Georgia, serif;
   font-size: clamp(2.125rem, 1.75rem + 1.4vw, 2.75rem);
   font-weight: 650;
   letter-spacing: 0;
@@ -93,6 +97,7 @@ h1 {
 
 h2 {
   margin-bottom: var(--space-4);
+  font-family: Fraunces, Charter, Georgia, serif;
   font-size: clamp(1.625rem, 1.4rem + 0.8vw, 2.125rem);
   font-weight: 650;
   letter-spacing: 0;

@@ -9,6 +9,15 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
   (left, right) => right.data.published.getTime() - left.data.published.getTime(),
 )
 
+const categories = [...new Set(posts.map((post) => post.data.category))].sort((left, right) =>
+  left.localeCompare(right, "ko"),
+)
+const categoryGroups = categories.map((category, index) => ({
+  category,
+  id: `category-${index + 1}`,
+  posts: posts.filter((post) => post.data.category === category),
+}))
+
 const baseUrl = new URL(import.meta.env.BASE_URL, Astro.site ?? "https://wonderrabbit.github.io")
 const siteHref = (href: string) => new URL(href.replace(/^\//, ""), baseUrl).pathname
 const formatDate = (date: Date) =>
@@ -21,29 +30,70 @@ const formatDate = (date: Date) =>
       <p class="eyebrow">Published notes</p>
       <h1>Blog</h1>
       <p class="lede">
-        Static Web publishing, AI-assisted engineering, and source-backed build notes.
-        Draft entries are excluded from this index.
+        Static Web publishing, AI-assisted engineering, and source-backed build notes
+        grouped by category so older posts stay findable.
       </p>
     </header>
 
-    <section class="article-list article-list--wide" aria-label="Published posts">
-      {
-        posts.map((post) => (
-          <article class="article-row">
-            <div class="article-row__meta">
-              <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published)}</time>
-              {post.data.updated && <span>Updated {formatDate(post.data.updated)}</span>}
-              <span>{post.data.category}</span>
-              {post.data.aiAssisted && <span>AI-assisted</span>}
-            </div>
-            <h2><a href={siteHref(`/blog/${post.id}/`)}>{post.data.title}</a></h2>
-            <p>{post.data.description}</p>
-            <div class="chip-list" aria-label="Post topics">
-              {post.data.tags.map((tag) => <span class="topic-chip">{tag}</span>)}
-            </div>
-          </article>
-        ))
-      }
-    </section>
+    <div class="blog-browser">
+      <nav class="category-tree" aria-label="Category tree" data-category-tree>
+        <p class="category-tree__label">Category tree</p>
+        <ul class="category-tree__list">
+          {
+            categoryGroups.map((group) => (
+              <li class="category-tree__category">
+                <a href={`#${group.id}`}>
+                  <span>{group.category}</span>
+                  <span class="category-tree__count">{group.posts.length}</span>
+                </a>
+                <ul aria-label={`${group.category} posts`}>
+                  {
+                    group.posts.map((post) => (
+                      <li>
+                        <a href={siteHref(`/blog/${post.id}/`)}>
+                          <span>{post.data.title}</span>
+                        </a>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <section class="article-list article-list--wide" aria-label="Published posts grouped by category">
+        {
+          categoryGroups.map((group) => (
+            <section class="category-section" id={group.id} aria-labelledby={`${group.id}-heading`}>
+              <header class="category-section__header">
+                <h2 id={`${group.id}-heading`}>{group.category}</h2>
+                <span class="category-section__count">{group.posts.length} posts</span>
+              </header>
+              <div class="article-list">
+                {
+                  group.posts.map((post) => (
+                    <article class="article-row">
+                      <div class="article-row__meta">
+                        <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published)}</time>
+                        {post.data.updated && <span>Updated {formatDate(post.data.updated)}</span>}
+                        <span>{post.data.category}</span>
+                        {post.data.aiAssisted && <span>AI-assisted</span>}
+                      </div>
+                      <h3><a href={siteHref(`/blog/${post.id}/`)}>{post.data.title}</a></h3>
+                      <p>{post.data.description}</p>
+                      <div class="chip-list" aria-label="Post topics">
+                        {post.data.tags.map((tag) => <span class="topic-chip">{tag}</span>)}
+                      </div>
+                    </article>
+                  ))
+                }
+              </div>
+            </section>
+          ))
+        }
+      </section>
+    </div>
   </main>
 </BaseLayout>

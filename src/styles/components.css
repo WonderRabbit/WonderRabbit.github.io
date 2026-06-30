@@ -1,9 +1,11 @@
 .eyebrow,
 .status-panel__label,
-.topic-card__label {
+.topic-card__label,
+.category-tree__label,
+.category-tree__count {
   margin: 0 0 var(--space-3);
   color: var(--text-tertiary);
-  font-family: "SF Mono", "JetBrains Mono", Consolas, monospace;
+  font-family: "JetBrains Mono", "SF Mono", Consolas, monospace;
   font-size: 12px;
   font-weight: 650;
   letter-spacing: 0.08em;
@@ -15,7 +17,8 @@
 .primary-card,
 .topic-card,
 .article-row,
-.meta-panel {
+.meta-panel,
+.category-tree {
   border: 1px solid var(--border-default);
   border-radius: 8px;
   background: var(--surface-secondary);
@@ -75,6 +78,90 @@
   color: var(--accent-primary);
 }
 
+.blog-browser {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.category-tree {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.category-tree__label {
+  margin-bottom: 0;
+}
+
+.category-tree ul {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.category-tree__category > ul {
+  margin-top: var(--space-2);
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--border-subtle);
+}
+
+.category-tree a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-weight: 560;
+}
+
+.category-tree a:hover {
+  background: var(--surface-muted);
+  color: var(--accent-hover);
+  text-decoration: none;
+  transform: translateX(2px);
+}
+
+.category-tree__category > a {
+  background: color-mix(in srgb, var(--surface-muted) 78%, transparent);
+  color: var(--text-primary);
+}
+
+.category-tree__count {
+  margin: 0;
+  color: var(--accent-secondary);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.category-section {
+  scroll-margin-top: 96px;
+}
+
+.category-section__header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.category-section__header h2 {
+  margin-bottom: 0;
+}
+
+.category-section__count {
+  color: var(--text-tertiary);
+  font-family: "JetBrains Mono", "SF Mono", Consolas, monospace;
+  font-size: 12px;
+}
+
 .article-list {
   display: grid;
   gap: var(--space-4);
@@ -103,7 +190,7 @@
 .page-updated,
 .source-list span {
   color: var(--text-tertiary);
-  font-family: "SF Mono", "JetBrains Mono", Consolas, monospace;
+  font-family: "JetBrains Mono", "SF Mono", Consolas, monospace;
   font-size: 12px;
   line-height: 1.5;
 }

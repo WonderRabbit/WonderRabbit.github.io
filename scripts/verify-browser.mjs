@@ -2,6 +2,16 @@ import { access, mkdir, writeFile } from "node:fs/promises"
 import { resolve } from "node:path"
 import axe from "axe-core"
 import { chromium } from "playwright"
+import {
+  assertBlogCategoryTree,
+  assertCatppuccinTheme,
+  assertDisclosureMetadata,
+  assertGitPrettyPostMetadata,
+  assertLazyVimPostMetadata,
+  assertNoHorizontalOverflow,
+  assertNoModelInfo,
+  assertWindowsPostMetadata,
+} from "./verify-browser-blog-assertions.mjs"
 
 class BrowserVerificationError extends Error {
   constructor(message) {
@@ -132,57 +142,6 @@ async function assertKeyboardFocus(page, label) {
   assert(hasVisibleFocus, `${label} active element lacks visible focus styling.`)
 }
 
-async function assertDisclosureMetadata(page) {
-  const jsonLd = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) =>
-    nodes.flatMap((node) => {
-      try {
-        return [JSON.parse(node.textContent ?? "")]
-      } catch (error) {
-        if (!(error instanceof SyntaxError)) {
-          throw error
-        }
-        return []
-      }
-    }),
-  )
-  assert(jsonLd.some((entry) => entry["@type"] === "BlogPosting"), "Post lacks BlogPosting JSON-LD.")
-  await page.getByText("AI-assisted").first().waitFor({ state: "visible", timeout: 5000 })
-  await page.getByText("Sources").first().waitFor({ state: "visible", timeout: 5000 })
-}
-
-async function assertNoModelInfo(page, label) {
-  const body = await page.textContent("body")
-  const html = await page.content()
-  for (const pattern of [/GPT-[0-9]+\s+Codex/i, /human\s*review/i, /AI\s+and\s+source\s+notes/i, /model\s*notes/i]) {
-    assert(!pattern.test(body ?? ""), `${label} body unexpectedly matched ${pattern}.`)
-    assert(!pattern.test(html), `${label} html unexpectedly matched ${pattern}.`)
-  }
-}
-
-async function assertWindowsPostMetadata(page) {
-  await page.getByText("Windows 운영").first().waitFor({ state: "visible", timeout: 5000 })
-  await page.getByText("GPU routing").first().waitFor({ state: "visible", timeout: 5000 })
-  await page.getByText("DXGI_GPU_PREFERENCE").first().waitFor({ state: "visible", timeout: 5000 })
-  await page.getByText("nvidia-smi pmon").first().waitFor({ state: "visible", timeout: 5000 })
-  await page.getByText("Sources").first().waitFor({ state: "visible", timeout: 5000 })
-}
-
-async function assertLazyVimPostMetadata(page) {
-  for (const text of ["Windows 10", "PowerShell 7.6", "LazyVim", "Neovim", "nvim-treesitter"]) {
-    await page.getByText(text).first().waitFor({ state: "visible", timeout: 5000 })
-  }
-  await page.getByText("Sources").first().waitFor({ state: "visible", timeout: 5000 })
-}
-
-async function assertGitPrettyPostMetadata(page) {
-  for (const text of ["GitHub 운영", "GitHub", "README", "Markdown", "오픈소스"]) {
-    await page.getByText(text).first().waitFor({ state: "visible", timeout: 5000 })
-  }
-  await page.getByRole("heading", { name: "Sources" }).waitFor({ state: "visible", timeout: 5000 })
-  await page.getByText("GitHub Docs, About READMEs").first().waitFor({ state: "visible", timeout: 5000 })
-  await page.getByText("Shields.io, Endpoint badges").first().waitFor({ state: "visible", timeout: 5000 })
-}
-
 await mkdir(screenshotRoot, { recursive: true })
 
 const endpointResults = []
@@ -239,8 +198,13 @@ try {
     assert(contentPattern.test(await page.textContent("body")), `${path} body did not match ${contentPattern}.`)
     await assertHeadingStructure(page, path)
     await assertKeyboardFocus(page, path)
+    await assertCatppuccinTheme(page, assert)
+    if (path === "/blog/") {
+      await assertBlogCategoryTree(page, assert)
+      await assertNoHorizontalOverflow(page, path, assert)
+    }
     if (path === "/blog/wonder-tinker-start/") {
-      await assertDisclosureMetadata(page)
+      await assertDisclosureMetadata(page, assert)
     }
     if (path === "/blog/windows10-disable-dgpu-for-general-apps/") {
       await assertWindowsPostMetadata(page)
@@ -252,7 +216,7 @@ try {
       await assertGitPrettyPostMetadata(page)
     }
     if (path.startsWith("/blog/")) {
-      await assertNoModelInfo(page, path)
+      await assertNoModelInfo(page, path, assert)
     }
     await page.addScriptTag({ content: axe.source })
     const axeResult = await page.evaluate(async () => window.axe.run(document, {

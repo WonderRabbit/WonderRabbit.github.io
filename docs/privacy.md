@@ -15,6 +15,10 @@ or a client-side tracking script by default.
 - GitHub Pages or the visitor's network provider may keep standard server or
   delivery logs outside this repository. Wonder Tinker does not control those
   platform logs from site code.
+- The site loads display and reading fonts from Google Fonts
+  (`fonts.googleapis.com` and `fonts.gstatic.com`). These requests are for
+  typography only; they are not an analytics package, comments system, account
+  flow, or project-owned tracking backend.
 
 ## Analytics and tracking
 

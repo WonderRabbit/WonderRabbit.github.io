@@ -2,7 +2,7 @@
 
 ## 1. Atmosphere & Identity
 
-Wonder Tinker feels like a quiet technical notebook: precise, readable, and ready for repeated publishing. The signature is a paper-like index page with restrained metadata, clear article rows, and a small amount of machine-room detail for Web and AI notes.
+Wonder Tinker feels like a quiet technical notebook running on Catppuccin: precise, readable, low-glare, and ready for repeated publishing. The signature is a Mocha-first index page with Latte-compatible tokens, category-tree browsing, restrained metadata, and a small amount of machine-room detail for Web and AI notes.
 
 ## 2. Color
 
@@ -10,25 +10,28 @@ Wonder Tinker feels like a quiet technical notebook: precise, readable, and read
 
 | Role | Token | Light | Dark | Usage |
 |------|-------|-------|------|-------|
-| Surface/primary | --surface-primary | #FBFBFA | #111111 | Page background |
-| Surface/secondary | --surface-secondary | #FFFFFF | #181818 | Article panels and header bands |
-| Surface-muted | --surface-muted | #F4F2ED | #202020 | Quiet metadata surfaces |
-| Text/primary | --text-primary | #1D1D1B | #FAFAFA | Headlines and body |
-| Text/secondary | --text-secondary | #696760 | #B4B0A8 | Summaries and metadata |
-| Text/tertiary | --text-tertiary | #8A867D | #8A867D | Fine labels |
-| Border/default | --border-default | #E7E2D8 | #34312B | Panels and dividers |
-| Border/subtle | --border-subtle | #F0EDE6 | #28251F | Soft separations |
-| Accent/primary | --accent-primary | #244C7A | #8CB4E8 | Links and focus |
-| Accent/hover | --accent-hover | #183B63 | #A6C8F0 | Link hover |
-| Status/info | --status-info | #E5EEF7 | #1C3148 | Topic chips |
-| Status/success | --status-success | #E9F1E7 | #1E3A24 | Stable-state indicators |
-| Status/warning | --status-warning | #F8EFD8 | #493715 | Draft indicators |
-| Status/error | --status-error | #F7E4E3 | #4A1F1D | Error states |
+| Surface/primary | --surface-primary | #EFF1F5 | #1E1E2E | Page background |
+| Surface/secondary | --surface-secondary | #E6E9EF | #181825 | Article panels and header bands |
+| Surface-muted | --surface-muted | #DCE0E8 | #313244 | Quiet metadata surfaces |
+| Surface-raised | --surface-raised | #CCD0DA | #45475A | Selected tree rows and inset surfaces |
+| Text/primary | --text-primary | #4C4F69 | #CDD6F4 | Headlines and body |
+| Text/secondary | --text-secondary | #5C5F77 | #BAC2DE | Summaries and metadata |
+| Text/tertiary | --text-tertiary | #6C6F85 | #A6ADC8 | Fine labels |
+| Border/default | --border-default | #BCC0CC | #45475A | Panels and dividers |
+| Border/subtle | --border-subtle | #CCD0DA | #313244 | Soft separations |
+| Accent/primary | --accent-primary | #1E66F5 | #89B4FA | Links and focus |
+| Accent/hover | --accent-hover | #8839EF | #CBA6F7 | Link hover |
+| Accent/secondary | --accent-secondary | #7287FD | #B4BEFE | Secondary selected states |
+| Status/info | --status-info | #DDE7F8 | #1F344F | Topic chips |
+| Status/success | --status-success | #DDEED8 | #203C31 | Stable-state indicators |
+| Status/warning | --status-warning | #F5E6C8 | #493A1F | Draft indicators |
+| Status/error | --status-error | #F2D5CF | #4A2634 | Error states |
 
 ### Rules
 
-- Accent color is reserved for links, focus rings, and selected technical metadata.
-- Large surfaces stay warm neutral; no decorative gradient fields.
+- Catppuccin Mocha is the default public theme. Latte values exist as the documented light-mode counterpart.
+- Accent color is reserved for links, focus rings, selected tree rows, and selected technical metadata.
+- Large surfaces stay on Catppuccin base, mantle, crust, and surface tones; no decorative gradient fields.
 - Any new color must be added here before use.
 
 ## 3. Typography
@@ -49,15 +52,18 @@ Wonder Tinker feels like a quiet technical notebook: precise, readable, and read
 
 ### Font Stack
 
-- Primary: Avenir Next, SF Pro Display, Helvetica Neue, Arial, sans-serif
-- Mono: SF Mono, JetBrains Mono, Consolas, monospace
-- Serif: Georgia, Times New Roman, serif
+- Primary: Atkinson Hyperlegible, Pretendard, Noto Sans KR, system-ui, sans-serif
+- Display: Fraunces, Charter, Georgia, serif
+- Mono: JetBrains Mono, SF Mono, Consolas, monospace
+- Serif: Charter, Georgia, Times New Roman, serif
 
 ### Rules
 
 - Body text never drops below 14px.
 - Letter spacing stays non-negative.
-- Mono text is only for metadata, code-like labels, and timestamps.
+- Display type is used only for page titles and the brand wordmark.
+- Mono text is only for metadata, code-like labels, category tree counts, and timestamps.
+- `BaseLayout.astro` loads Atkinson Hyperlegible, Fraunces, JetBrains Mono, and Noto Sans KR through a single Google Fonts stylesheet with `display=swap`.
 
 ## 4. Spacing & Layout
 
@@ -109,6 +115,15 @@ All spacing derives from a base of 4px.
 - States: static in scaffold.
 - Accessibility: text label does not rely on color alone.
 - Motion: none.
+
+### Category Tree
+
+- Structure: `<nav>` landmark with a nested list navigation tree containing category anchors and nested post links.
+- Variants: compact sticky sidebar on desktop, full-width menu on mobile.
+- Spacing: --space-3 to --space-5.
+- States: default, hover, focus, current section target.
+- Accessibility: visible focus ring; category counts are textual; post links remain normal anchors.
+- Motion: hover changes color and translate only.
 
 ## 6. Motion & Interaction
 

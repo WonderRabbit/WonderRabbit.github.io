@@ -16,7 +16,7 @@
 
 .site-header,
 .site-footer {
-  background: color-mix(in srgb, var(--surface-primary) 92%, transparent);
+  background: color-mix(in srgb, var(--surface-primary) 88%, transparent);
 }
 
 .site-header {
@@ -43,6 +43,8 @@
 
 .site-nav__brand {
   color: var(--text-primary);
+  font-family: Fraunces, Charter, Georgia, serif;
+  font-size: 20px;
 }
 
 .site-nav__links,

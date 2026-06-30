@@ -1,4 +1,4 @@
-import { access, readFile } from "node:fs/promises"
+import { access, readdir, readFile } from "node:fs/promises"
 import { join } from "node:path"
 
 class SiteVerificationError extends Error {
@@ -61,6 +61,50 @@ const assertNoModelInfo = (label, text) => {
   }
 }
 
+async function readBuiltCssText() {
+  const assetRoot = filePath("_astro")
+  const entries = await readdir(assetRoot, { withFileTypes: true })
+  const cssFiles = entries.filter((entry) => entry.isFile() && entry.name.endsWith(".css"))
+  assert(cssFiles.length > 0, "No built CSS assets found.")
+  const cssParts = await Promise.all(cssFiles.map((entry) => readText(join(assetRoot, entry.name))))
+  return cssParts.join("\n")
+}
+
+const assertCatppuccinTheme = (label, text) => {
+  assertMatches(label, text, /--surface-primary:\s*#1e1e2e/i)
+  assertMatches(label, text, /--accent-primary:\s*#89b4fa/i)
+  assertMatches(label, text, /Atkinson Hyperlegible/)
+  assertDoesNotMatch(label, text, /Avenir Next/)
+}
+
+const assertFontLoading = (homeHtml) => {
+  assertMatches("font loading", homeHtml, /fonts\.googleapis\.com/)
+  assertMatches("font loading", homeHtml, /Atkinson\+Hyperlegible/)
+  assertMatches("font loading", homeHtml, /Fraunces/)
+  assertMatches("font loading", homeHtml, /JetBrains\+Mono/)
+  assertMatches("font loading", homeHtml, /Noto\+Sans\+KR/)
+}
+
+const assertBlogCategoryTree = (blogHtml) => {
+  assertMatches("blog category tree", blogHtml, /aria-label="Category tree"/)
+  assertMatches("blog category tree", blogHtml, /data-category-tree/)
+  assertMatches("blog category tree", blogHtml, /category-tree__list/)
+  const categories = [...blogHtml.matchAll(/<h2 id="category-[^"]+-heading">([\s\S]*?)<\/h2>/gi)].map((match) =>
+    stripTags(match[1]),
+  )
+  const articleTitles = [...blogHtml.matchAll(/<h3><a href="\/blog\/[^"]+\/">([\s\S]*?)<\/a><\/h3>/gi)].map((match) =>
+    stripTags(match[1]),
+  )
+  assert(categories.length > 0, "blog category tree has no category sections")
+  assert(articleTitles.length > 0, "blog category tree has no article titles")
+  for (const category of categories) {
+    assertMatches("blog category tree", blogHtml, new RegExp(`<a href="#category-[^"]+">[\\s\\S]*?${category}`))
+  }
+  for (const title of articleTitles) {
+    assertMatches("blog category tree", blogHtml, new RegExp(`<a href="/blog/[^"]+/">[\\s\\S]*?${title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`))
+  }
+}
+
 const routeHtml = async (label, parts, patterns) => {
   const path = await assertFile(...parts)
   const text = await readText(path)
@@ -106,6 +150,9 @@ function assertBlogPostingJsonLd(postHtml, expected) {
 }
 
 const homeHtml = await routeHtml("home", ["index.html"], [/Wonder Tinker/, /Web and AI/, /Recent posts/])
+const builtCss = await readBuiltCssText()
+assertCatppuccinTheme("built CSS theme", builtCss)
+assertFontLoading(homeHtml)
 assertMatches("home", homeHtml, /my-git-pretty/)
 assertMatches("home", homeHtml, /ollama-opencode-local-models-under-20gb/)
 assertMatches("home", homeHtml, /windows10-lazyvim-disable-treesitter/)
@@ -123,6 +170,7 @@ const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
   /AI-assisted/,
 ])
 assertNoModelInfo("blog", blogHtml)
+assertBlogCategoryTree(blogHtml)
 const postHtml = await routeHtml("post", ["blog", "wonder-tinker-start", "index.html"], [
   /AI-assisted/,
   /Sources/,
