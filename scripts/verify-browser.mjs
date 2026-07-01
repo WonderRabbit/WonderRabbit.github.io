@@ -7,6 +7,7 @@ import {
   assertCatppuccinTheme,
   assertDisclosureMetadata,
   assertGitPrettyPostMetadata,
+  assertJqPostMetadata,
   assertLazyVimPostMetadata,
   assertNoHorizontalOverflow,
   assertNoModelInfo,
@@ -67,6 +68,7 @@ const isBundledBrowserMissingError = (error) =>
 const endpointChecks = [
   ["/", /Wonder|blog|AI/i],
   ["/blog/", /wonder-tinker-start|windows10-disable-dgpu-for-general-apps|Blog|블로그/i],
+  ["/blog/jq-developer-workflow/", /jq|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/ripgrep-developer-workflow/", /ripgrep|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/wonder-tinker-start/", /BlogPosting|AI|Wonder/i],
   ["/blog/windows10-disable-dgpu-for-general-apps/", /Windows 10|Windows 운영|GPU routing|DXGI_GPU_PREFERENCE/i],
@@ -81,6 +83,7 @@ const endpointChecks = [
 const pageChecks = [
   ["/", "home.png", /Wonder Tinker/i],
   ["/blog/", "blog.png", /Blog/i],
+  ["/blog/jq-developer-workflow/", "post-jq-developer-workflow.png", /Windows without WSL/i],
   ["/blog/ripgrep-developer-workflow/", "post-ripgrep-developer-workflow.png", /Windows without WSL/i],
   ["/blog/wonder-tinker-start/", "post-wonder-tinker-start.png", /Sources/i],
   ["/blog/windows10-disable-dgpu-for-general-apps/", "post-windows10-disable-dgpu-for-general-apps.png", /Windows 운영/i],
@@ -220,6 +223,9 @@ try {
     }
     if (path === "/blog/ripgrep-developer-workflow/") {
       await assertRipgrepPostMetadata(page)
+    }
+    if (path === "/blog/jq-developer-workflow/") {
+      await assertJqPostMetadata(page, assert)
     }
     if (path.startsWith("/blog/")) {
       await assertNoModelInfo(page, path, assert)

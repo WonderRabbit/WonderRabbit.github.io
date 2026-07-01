@@ -49,6 +49,11 @@ const assertDoesNotMatch = (label, text, pattern) => {
   assert(!pattern.test(text), `${label} unexpectedly matched ${pattern}`)
 }
 
+const assertNoSourcesPanel = (label, text) => {
+  assertDoesNotMatch(label, text, /id="sources-heading"/)
+  assertDoesNotMatch(label, text, /<h2[^>]*>\s*Sources\s*<\/h2>/i)
+}
+
 const assertNoModelInfo = (label, text) => {
   const forbiddenRenderedPatterns = [
     /GPT-[0-9]+\s+Codex/i,
@@ -153,13 +158,13 @@ const homeHtml = await routeHtml("home", ["index.html"], [/Wonder Tinker/, /Web 
 const builtCss = await readBuiltCssText()
 assertCatppuccinTheme("built CSS theme", builtCss)
 assertFontLoading(homeHtml)
-assertMatches("home", homeHtml, /ripgrep-developer-workflow/)
-assertMatches("home", homeHtml, /my-git-pretty/)
+assertMatches("home", homeHtml, /jq-developer-workflow/)
 assertNoModelInfo("home", homeHtml)
 
 const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
   /Blog/,
   /ripgrep-developer-workflow/,
+  /jq-developer-workflow/,
   /wonder-tinker-start/,
   /windows10-disable-dgpu-for-general-apps/,
   /windows10-lazyvim-disable-treesitter/,
@@ -172,82 +177,26 @@ const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
 ])
 assertNoModelInfo("blog", blogHtml)
 assertBlogCategoryTree(blogHtml)
-const postHtml = await routeHtml("post", ["blog", "wonder-tinker-start", "index.html"], [
-  /AI-assisted/,
-  /Sources/,
-  /Astro content collections guide/,
-])
-assertNoModelInfo("post", postHtml)
-assertBlogPostingJsonLd(postHtml, {
-  headline: "Wonder Tinker",
-  url: "https://wonderrabbit.github.io/blog/wonder-tinker-start/",
-  category: "Site notes",
-})
-const windowsPostHtml = await routeHtml("windows dGPU post", ["blog", "windows10-disable-dgpu-for-general-apps", "index.html"], [
-  /Windows 10/,
-  /Windows 운영/,
-  /GPU routing/,
-  /DXGI_GPU_PREFERENCE/,
-  /nvidia-smi pmon/,
-  /Sources/,
-])
-assertNoModelInfo("windows dGPU post", windowsPostHtml)
-assertBlogPostingJsonLd(windowsPostHtml, {
-  headline: "Windows 10",
-  url: "https://wonderrabbit.github.io/blog/windows10-disable-dgpu-for-general-apps/",
-  category: "Windows 운영",
-})
-const lazyvimPostHtml = await routeHtml(
-  "LazyVim Tree-sitter post",
-  ["blog", "windows10-lazyvim-disable-treesitter", "index.html"],
-  [
-    /Windows 10/,
-    /PowerShell 7\.6/,
-    /Neovim/,
-    /LazyVim/,
-    /nvim-treesitter/,
-    /Tree-sitter/,
-    /Sources/,
-    /LazyVim Configuration/,
-    /nvim-treesitter README/,
-  ],
-)
-assertNoModelInfo("LazyVim Tree-sitter post", lazyvimPostHtml)
-assertDoesNotMatch("LazyVim Tree-sitter post", lazyvimPostHtml, /model\s*notes/i)
-assertBlogPostingJsonLd(lazyvimPostHtml, {
-  headline: "Windows 10 LazyVim",
-  url: "https://wonderrabbit.github.io/blog/windows10-lazyvim-disable-treesitter/",
-  category: "Windows 개발 환경",
-})
-const ripgrepPostHtml = await routeHtml("ripgrep developer workflow post", ["blog", "ripgrep-developer-workflow", "index.html"], [
-  /ripgrep/,
-  /Windows without WSL/,
-  /winget install BurntSushi\.ripgrep\.MSVC/,
-  /Claude Code/,
-  /OpenCode/,
-  /Codex/,
-  /Sources/,
-])
-assertNoModelInfo("ripgrep developer workflow post", ripgrepPostHtml)
-assertBlogPostingJsonLd(ripgrepPostHtml, {
-  headline: "ripgrep",
-  url: "https://wonderrabbit.github.io/blog/ripgrep-developer-workflow/",
-  category: "Developer Tools",
-})
-const gitPrettyPostHtml = await routeHtml("GitHub README post", ["blog", "my-git-pretty", "index.html"], [
-  /내 git 예쁘게 꾸미기/,
-  /GitHub 운영/,
-  /README/,
-  /Sources/,
-  /GitHub Docs, About READMEs/,
-  /Shields\.io, Endpoint badges/,
-])
-assertNoModelInfo("GitHub README post", gitPrettyPostHtml)
-assertBlogPostingJsonLd(gitPrettyPostHtml, {
-  headline: "내 git 예쁘게 꾸미기",
-  url: "https://wonderrabbit.github.io/blog/my-git-pretty/",
-  category: "GitHub 운영",
-})
+const postChecks = [
+  { label: "post", slug: "wonder-tinker-start", patterns: [/AI-assisted/, /Sources/, /Astro content collections guide/], headline: "Wonder Tinker", category: "Site notes" },
+  { label: "windows dGPU post", slug: "windows10-disable-dgpu-for-general-apps", patterns: [/Windows 10/, /Windows 운영/, /GPU routing/, /DXGI_GPU_PREFERENCE/, /nvidia-smi pmon/, /Sources/], headline: "Windows 10", category: "Windows 운영" },
+  { label: "LazyVim Tree-sitter post", slug: "windows10-lazyvim-disable-treesitter", patterns: [/Windows 10/, /PowerShell 7\.6/, /Neovim/, /LazyVim/, /nvim-treesitter/, /Tree-sitter/, /Sources/, /LazyVim Configuration/, /nvim-treesitter README/], headline: "Windows 10 LazyVim", category: "Windows 개발 환경", reject: /model\s*notes/i },
+  { label: "ripgrep developer workflow post", slug: "ripgrep-developer-workflow", patterns: [/ripgrep/, /Windows without WSL/, /winget install BurntSushi\.ripgrep\.MSVC/, /Claude Code/, /OpenCode/, /Codex/, /Sources/], headline: "ripgrep", category: "Developer Tools" },
+  { label: "jq developer workflow post", slug: "jq-developer-workflow", patterns: [/jq를 CLI와 코딩 에이전트의 JSON 필터로 쓰기/, /Windows without WSL/, /winget install jqlang\.jq/, /Claude Code/, /OpenCode/, /Codex/, /약 99%/], headline: "jq를 CLI와 코딩 에이전트", category: "Developer Tools", hideSources: true },
+  { label: "GitHub README post", slug: "my-git-pretty", patterns: [/내 git 예쁘게 꾸미기/, /GitHub 운영/, /README/, /Sources/, /GitHub Docs, About READMEs/, /Shields\.io, Endpoint badges/], headline: "내 git 예쁘게 꾸미기", category: "GitHub 운영" },
+]
+
+for (const post of postChecks) {
+  const html = await routeHtml(post.label, ["blog", post.slug, "index.html"], post.patterns)
+  assertNoModelInfo(post.label, html)
+  if (post.reject) assertDoesNotMatch(post.label, html, post.reject)
+  if (post.hideSources) assertNoSourcesPanel(post.label, html)
+  assertBlogPostingJsonLd(html, {
+    headline: post.headline,
+    url: `https://wonderrabbit.github.io/blog/${post.slug}/`,
+    category: post.category,
+  })
+}
 
 await routeHtml("editorial policy", ["editorial-policy", "index.html"], [/AI/, /disclos|공개|출처/i])
 await routeHtml("privacy", ["privacy", "index.html"], [/analytics/i, /tracking/i, /privacy/i])

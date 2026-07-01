@@ -58,6 +58,14 @@ export async function assertRipgrepPostMetadata(page) {
   await page.getByText("OpenAI Codex CLI documentation").first().waitFor({ state: "visible", timeout: 5000 })
 }
 
+export async function assertJqPostMetadata(page, assert) {
+  for (const text of ["Developer Tools", "jq", "Windows without WSL", "Claude Code", "OpenCode", "Codex", "약 99%"]) {
+    await page.getByText(text).first().waitFor({ state: "visible", timeout: 5000 })
+  }
+  assert(await page.getByRole("heading", { name: "Sources" }).count() === 0, "jq post should not render a Sources panel.")
+  assert(await page.locator("#sources-heading").count() === 0, "jq post should not render sources-heading.")
+}
+
 export async function assertBlogCategoryTree(page, assert) {
   await page.getByRole("navigation", { name: /category tree/i }).waitFor({ state: "visible", timeout: 5000 })
   const tree = await page.evaluate(() => {
