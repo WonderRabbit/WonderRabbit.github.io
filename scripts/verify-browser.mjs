@@ -10,6 +10,7 @@ import {
   assertLazyVimPostMetadata,
   assertNoHorizontalOverflow,
   assertNoModelInfo,
+  assertRipgrepPostMetadata,
   assertWindowsPostMetadata,
 } from "./verify-browser-blog-assertions.mjs"
 
@@ -66,6 +67,7 @@ const isBundledBrowserMissingError = (error) =>
 const endpointChecks = [
   ["/", /Wonder|blog|AI/i],
   ["/blog/", /wonder-tinker-start|windows10-disable-dgpu-for-general-apps|Blog|블로그/i],
+  ["/blog/ripgrep-developer-workflow/", /ripgrep|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/wonder-tinker-start/", /BlogPosting|AI|Wonder/i],
   ["/blog/windows10-disable-dgpu-for-general-apps/", /Windows 10|Windows 운영|GPU routing|DXGI_GPU_PREFERENCE/i],
   ["/blog/my-git-pretty/", /내 git 예쁘게 꾸미기|GitHub 운영|README|Shields\.io/i],
@@ -79,6 +81,7 @@ const endpointChecks = [
 const pageChecks = [
   ["/", "home.png", /Wonder Tinker/i],
   ["/blog/", "blog.png", /Blog/i],
+  ["/blog/ripgrep-developer-workflow/", "post-ripgrep-developer-workflow.png", /Windows without WSL/i],
   ["/blog/wonder-tinker-start/", "post-wonder-tinker-start.png", /Sources/i],
   ["/blog/windows10-disable-dgpu-for-general-apps/", "post-windows10-disable-dgpu-for-general-apps.png", /Windows 운영/i],
   ["/blog/windows10-lazyvim-disable-treesitter/", "post-windows10-lazyvim-disable-treesitter.png", /PowerShell 7\.6/i],
@@ -214,6 +217,9 @@ try {
     }
     if (path === "/blog/my-git-pretty/") {
       await assertGitPrettyPostMetadata(page)
+    }
+    if (path === "/blog/ripgrep-developer-workflow/") {
+      await assertRipgrepPostMetadata(page)
     }
     if (path.startsWith("/blog/")) {
       await assertNoModelInfo(page, path, assert)

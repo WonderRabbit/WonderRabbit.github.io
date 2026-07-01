@@ -49,6 +49,15 @@ export async function assertGitPrettyPostMetadata(page) {
   await page.getByText("Shields.io, Endpoint badges").first().waitFor({ state: "visible", timeout: 5000 })
 }
 
+export async function assertRipgrepPostMetadata(page) {
+  for (const text of ["Developer Tools", "ripgrep", "Windows without WSL", "Claude Code", "OpenCode", "Codex"]) {
+    await page.getByText(text).first().waitFor({ state: "visible", timeout: 5000 })
+  }
+  await page.getByRole("heading", { name: "Sources" }).waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("BurntSushi/ripgrep README").first().waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("OpenAI Codex CLI documentation").first().waitFor({ state: "visible", timeout: 5000 })
+}
+
 export async function assertBlogCategoryTree(page, assert) {
   await page.getByRole("navigation", { name: /category tree/i }).waitFor({ state: "visible", timeout: 5000 })
   const tree = await page.evaluate(() => {

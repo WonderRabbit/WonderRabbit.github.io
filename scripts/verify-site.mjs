@@ -153,17 +153,18 @@ const homeHtml = await routeHtml("home", ["index.html"], [/Wonder Tinker/, /Web 
 const builtCss = await readBuiltCssText()
 assertCatppuccinTheme("built CSS theme", builtCss)
 assertFontLoading(homeHtml)
+assertMatches("home", homeHtml, /ripgrep-developer-workflow/)
 assertMatches("home", homeHtml, /my-git-pretty/)
-assertMatches("home", homeHtml, /ollama-opencode-local-models-under-20gb/)
-assertMatches("home", homeHtml, /windows10-lazyvim-disable-treesitter/)
 assertNoModelInfo("home", homeHtml)
 
 const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
   /Blog/,
+  /ripgrep-developer-workflow/,
   /wonder-tinker-start/,
   /windows10-disable-dgpu-for-general-apps/,
   /windows10-lazyvim-disable-treesitter/,
   /my-git-pretty/,
+  /Developer Tools/,
   /Windows 운영/,
   /Windows 개발 환경/,
   /GitHub 운영/,
@@ -217,6 +218,21 @@ assertBlogPostingJsonLd(lazyvimPostHtml, {
   headline: "Windows 10 LazyVim",
   url: "https://wonderrabbit.github.io/blog/windows10-lazyvim-disable-treesitter/",
   category: "Windows 개발 환경",
+})
+const ripgrepPostHtml = await routeHtml("ripgrep developer workflow post", ["blog", "ripgrep-developer-workflow", "index.html"], [
+  /ripgrep/,
+  /Windows without WSL/,
+  /winget install BurntSushi\.ripgrep\.MSVC/,
+  /Claude Code/,
+  /OpenCode/,
+  /Codex/,
+  /Sources/,
+])
+assertNoModelInfo("ripgrep developer workflow post", ripgrepPostHtml)
+assertBlogPostingJsonLd(ripgrepPostHtml, {
+  headline: "ripgrep",
+  url: "https://wonderrabbit.github.io/blog/ripgrep-developer-workflow/",
+  category: "Developer Tools",
 })
 const gitPrettyPostHtml = await routeHtml("GitHub README post", ["blog", "my-git-pretty", "index.html"], [
   /내 git 예쁘게 꾸미기/,
