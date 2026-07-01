@@ -11,6 +11,7 @@ import {
   assertLazyVimPostMetadata,
   assertNoHorizontalOverflow,
   assertNoModelInfo,
+  assertProjectMapPostMetadata,
   assertRipgrepPostMetadata,
   assertWindowsPostMetadata,
 } from "./verify-browser-blog-assertions.mjs"
@@ -84,6 +85,7 @@ const pageChecks = [
   ["/", "home.png", /Wonder Tinker/i],
   ["/blog/", "blog.png", /Blog/i],
   ["/blog/jq-developer-workflow/", "post-jq-developer-workflow.png", /Windows without WSL/i],
+  ["/blog/project-map-small-model-data-flow/", "post-project-map-small-model-data-flow.png", /작은 모델에게 프로젝트 지도를 건네는 법 1부/i],
   ["/blog/ripgrep-developer-workflow/", "post-ripgrep-developer-workflow.png", /Windows without WSL/i],
   ["/blog/wonder-tinker-start/", "post-wonder-tinker-start.png", /Sources/i],
   ["/blog/windows10-disable-dgpu-for-general-apps/", "post-windows10-disable-dgpu-for-general-apps.png", /Windows 운영/i],
@@ -226,6 +228,9 @@ try {
     }
     if (path === "/blog/jq-developer-workflow/") {
       await assertJqPostMetadata(page, assert)
+    }
+    if (path === "/blog/project-map-small-model-data-flow/") {
+      await assertProjectMapPostMetadata(page, assert)
     }
     if (path.startsWith("/blog/")) {
       await assertNoModelInfo(page, path, assert)

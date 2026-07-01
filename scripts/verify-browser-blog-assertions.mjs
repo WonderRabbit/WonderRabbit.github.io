@@ -66,6 +66,24 @@ export async function assertJqPostMetadata(page, assert) {
   assert(await page.locator("#sources-heading").count() === 0, "jq post should not render sources-heading.")
 }
 
+export async function assertProjectMapPostMetadata(page, assert) {
+  for (const text of [
+    "작은 모델에게 프로젝트 지도를 건네는 법 1부",
+    "OpenCode",
+    "Obsidian",
+    "CodeGraph",
+    "ast-grep",
+    "작은 모델에게 필요한 것은 더 많은 말이 아니라, 더 좋은 입구다.",
+  ]) {
+    await page.getByText(text).first().waitFor({ state: "visible", timeout: 5000 })
+  }
+  assert(
+    await page.getByRole("heading", { name: "Sources" }).count() === 0,
+    "project map post should not render a Sources panel.",
+  )
+  assert(await page.locator("#sources-heading").count() === 0, "project map post should not render sources-heading.")
+}
+
 export async function assertBlogCategoryTree(page, assert) {
   await page.getByRole("navigation", { name: /category tree/i }).waitFor({ state: "visible", timeout: 5000 })
   const tree = await page.evaluate(() => {

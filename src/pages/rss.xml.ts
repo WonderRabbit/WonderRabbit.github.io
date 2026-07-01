@@ -20,7 +20,9 @@ export async function GET(context: APIContext): Promise<Response> {
       pubDate: post.data.published,
       link: `blog/${post.id}/`,
       categories: [post.data.category, ...post.data.tags],
-      customData: `<aiAssisted>${post.data.aiAssisted}</aiAssisted><sources><ul>${formatSourceList(post.data.sources)}</ul></sources>`,
+      customData: `<aiAssisted>${post.data.aiAssisted}</aiAssisted>${
+        post.data.showSources ? `<sources><ul>${formatSourceList(post.data.sources)}</ul></sources>` : ""
+      }`,
     })),
   })
 }

@@ -165,6 +165,7 @@ const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
   /Blog/,
   /ripgrep-developer-workflow/,
   /jq-developer-workflow/,
+  /project-map-small-model-data-flow/,
   /wonder-tinker-start/,
   /windows10-disable-dgpu-for-general-apps/,
   /windows10-lazyvim-disable-treesitter/,
@@ -183,6 +184,7 @@ const postChecks = [
   { label: "LazyVim Tree-sitter post", slug: "windows10-lazyvim-disable-treesitter", patterns: [/Windows 10/, /PowerShell 7\.6/, /Neovim/, /LazyVim/, /nvim-treesitter/, /Tree-sitter/, /Sources/, /LazyVim Configuration/, /nvim-treesitter README/], headline: "Windows 10 LazyVim", category: "Windows 개발 환경", reject: /model\s*notes/i },
   { label: "ripgrep developer workflow post", slug: "ripgrep-developer-workflow", patterns: [/ripgrep/, /Windows without WSL/, /winget install BurntSushi\.ripgrep\.MSVC/, /Claude Code/, /OpenCode/, /Codex/, /Sources/], headline: "ripgrep", category: "Developer Tools" },
   { label: "jq developer workflow post", slug: "jq-developer-workflow", patterns: [/jq를 CLI와 코딩 에이전트의 JSON 필터로 쓰기/, /Windows without WSL/, /winget install jqlang\.jq/, /Claude Code/, /OpenCode/, /Codex/, /약 99%/], headline: "jq를 CLI와 코딩 에이전트", category: "Developer Tools", hideSources: true },
+  { label: "project map small model post", slug: "project-map-small-model-data-flow", patterns: [/작은 모델에게 프로젝트 지도를 건네는 법 1부/, /OpenCode/, /Obsidian/, /CodeGraph/, /ast-grep/, /작은 모델에게 필요한 것은 더 많은 말이 아니라, 더 좋은 입구다\./], headline: "작은 모델에게 프로젝트 지도를 건네는 법 1부", category: "Developer Tools", hideSources: true },
   { label: "GitHub README post", slug: "my-git-pretty", patterns: [/내 git 예쁘게 꾸미기/, /GitHub 운영/, /README/, /Sources/, /GitHub Docs, About READMEs/, /Shields\.io, Endpoint badges/], headline: "내 git 예쁘게 꾸미기", category: "GitHub 운영" },
 ]
 
@@ -205,6 +207,8 @@ await routeHtml("404", ["404.html"], [/404|Not Found|찾을/i])
 const rss = await readText(await assertFile("rss.xml"))
 assertMatches("rss", rss, /<rss\b|<feed\b|<channel\b/i)
 assertMatches("rss", rss, /wonder-tinker-start|Wonder Tinker/)
+assertMatches("rss", rss, /project-map-small-model-data-flow/)
+assertDoesNotMatch("rss", rss, /Wonder Tinker local publishing note/)
 assert(!/^\s*broken\s*$/i.test(rss), "RSS appears corrupted.")
 
 const sitemapPath = (await exists(filePath("sitemap-index.xml"))) ? await assertFile("sitemap-index.xml") : await assertFile("sitemap.xml")
@@ -223,6 +227,6 @@ assert(!/github\.io\/wonder-tinker\.github\.io\//i.test(robots), "Robots contain
 assert(!(await exists(filePath("CNAME"))), "User Pages deployment must not include an obsolete custom-domain CNAME.")
 
 console.log(`site_verified: ${root}`)
-console.log("routes: home blog post lazyvim-post my-git-pretty editorial-policy privacy 404")
+console.log("routes: home blog post lazyvim-post my-git-pretty project-map-post editorial-policy privacy 404")
 console.log("feeds: rss sitemap robots")
 console.log("metadata: BlogPosting JSON-LD AI disclosure sources")
