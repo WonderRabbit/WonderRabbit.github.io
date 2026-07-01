@@ -4,7 +4,7 @@ import { z } from "astro/zod"
 
 const sourceSchema = z.object({
   title: z.string().min(1),
-  url: z.string().url(),
+  url: z.url(),
   accessed: z.coerce.date(),
 })
 
@@ -19,6 +19,7 @@ const posts = defineCollection({
     category: z.string().min(1),
     tags: z.array(z.string().min(1)).min(1),
     aiAssisted: z.boolean(),
+    showSources: z.boolean().default(true),
     sources: z.array(sourceSchema).min(1),
   }),
 })

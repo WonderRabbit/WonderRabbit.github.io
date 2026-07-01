@@ -88,19 +88,21 @@ const jsonLd = JSON.stringify(blogPosting).replaceAll("<", "\\u003c")
         <Content />
       </div>
 
-      <section class="meta-panel" aria-labelledby="sources-heading">
-        <h2 id="sources-heading">Sources</h2>
-        <ul class="source-list">
-          {
-            post.data.sources.map((source) => (
-              <li>
-                <a href={source.url}>{source.title}</a>
-                <span>Accessed {formatDate(source.accessed)}</span>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
+      {
+        post.data.showSources && (
+          <section class="meta-panel" aria-labelledby="sources-heading">
+            <h2 id="sources-heading">Sources</h2>
+            <ul class="source-list">
+              {post.data.sources.map((source) => (
+                <li>
+                  <a href={source.url}>{source.title}</a>
+                  <span>Accessed {formatDate(source.accessed)}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
     </article>
   </main>
 </BaseLayout>
