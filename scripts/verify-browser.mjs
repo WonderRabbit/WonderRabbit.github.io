@@ -6,6 +6,7 @@ import {
   assertBlogCategoryTree,
   assertCatppuccinTheme,
   assertDisclosureMetadata,
+  assertFdPostMetadata,
   assertGitPrettyPostMetadata,
   assertJqPostMetadata,
   assertLazyVimPostMetadata,
@@ -70,6 +71,7 @@ const endpointChecks = [
   ["/", /Wonder|blog|AI/i],
   ["/blog/", /wonder-tinker-start|windows10-disable-dgpu-for-general-apps|Blog|블로그/i],
   ["/blog/jq-developer-workflow/", /jq|Windows without WSL|Claude Code|OpenCode|Codex/i],
+  ["/blog/fd-developer-workflow/", /fd|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/ripgrep-developer-workflow/", /ripgrep|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/wonder-tinker-start/", /BlogPosting|AI|Wonder/i],
   ["/blog/windows10-disable-dgpu-for-general-apps/", /Windows 10|Windows 운영|GPU routing|DXGI_GPU_PREFERENCE/i],
@@ -85,6 +87,7 @@ const pageChecks = [
   ["/", "home.png", /Wonder Tinker/i],
   ["/blog/", "blog.png", /Blog/i],
   ["/blog/jq-developer-workflow/", "post-jq-developer-workflow.png", /Windows without WSL/i],
+  ["/blog/fd-developer-workflow/", "post-fd-developer-workflow.png", /Windows without WSL/i],
   ["/blog/project-map-small-model-data-flow/", "post-project-map-small-model-data-flow.png", /작은 모델에게 프로젝트 지도를 건네는 법 1부/i],
   ["/blog/ripgrep-developer-workflow/", "post-ripgrep-developer-workflow.png", /Windows without WSL/i],
   ["/blog/wonder-tinker-start/", "post-wonder-tinker-start.png", /Sources/i],
@@ -228,6 +231,9 @@ try {
     }
     if (path === "/blog/jq-developer-workflow/") {
       await assertJqPostMetadata(page, assert)
+    }
+    if (path === "/blog/fd-developer-workflow/") {
+      await assertFdPostMetadata(page, assert)
     }
     if (path === "/blog/project-map-small-model-data-flow/") {
       await assertProjectMapPostMetadata(page, assert)

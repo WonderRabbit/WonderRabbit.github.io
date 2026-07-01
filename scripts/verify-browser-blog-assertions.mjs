@@ -66,6 +66,24 @@ export async function assertJqPostMetadata(page, assert) {
   assert(await page.locator("#sources-heading").count() === 0, "jq post should not render sources-heading.")
 }
 
+export async function assertFdPostMetadata(page, assert) {
+  for (const text of [
+    "Developer Tools",
+    "fd",
+    "Windows without WSL",
+    "winget install sharkdp.fd",
+    "fd_10.4.2_amd64.deb",
+    "Claude Code",
+    "OpenCode",
+    "Codex",
+    "파일 후보",
+  ]) {
+    await page.getByText(text).first().waitFor({ state: "visible", timeout: 5000 })
+  }
+  assert(await page.getByRole("heading", { name: "Sources" }).count() === 0, "fd post should not render a Sources panel.")
+  assert(await page.locator("#sources-heading").count() === 0, "fd post should not render sources-heading.")
+}
+
 export async function assertProjectMapPostMetadata(page, assert) {
   for (const text of [
     "작은 모델에게 프로젝트 지도를 건네는 법 1부",

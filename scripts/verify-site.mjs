@@ -158,13 +158,14 @@ const homeHtml = await routeHtml("home", ["index.html"], [/Wonder Tinker/, /Web 
 const builtCss = await readBuiltCssText()
 assertCatppuccinTheme("built CSS theme", builtCss)
 assertFontLoading(homeHtml)
-assertMatches("home", homeHtml, /jq-developer-workflow/)
+assertMatches("home", homeHtml, /fd-developer-workflow/)
 assertNoModelInfo("home", homeHtml)
 
 const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
   /Blog/,
   /ripgrep-developer-workflow/,
   /jq-developer-workflow/,
+  /fd-developer-workflow/,
   /project-map-small-model-data-flow/,
   /wonder-tinker-start/,
   /windows10-disable-dgpu-for-general-apps/,
@@ -184,6 +185,7 @@ const postChecks = [
   { label: "LazyVim Tree-sitter post", slug: "windows10-lazyvim-disable-treesitter", patterns: [/Windows 10/, /PowerShell 7\.6/, /Neovim/, /LazyVim/, /nvim-treesitter/, /Tree-sitter/, /Sources/, /LazyVim Configuration/, /nvim-treesitter README/], headline: "Windows 10 LazyVim", category: "Windows 개발 환경", reject: /model\s*notes/i },
   { label: "ripgrep developer workflow post", slug: "ripgrep-developer-workflow", patterns: [/ripgrep/, /Windows without WSL/, /winget install BurntSushi\.ripgrep\.MSVC/, /Claude Code/, /OpenCode/, /Codex/, /Sources/], headline: "ripgrep", category: "Developer Tools" },
   { label: "jq developer workflow post", slug: "jq-developer-workflow", patterns: [/jq를 CLI와 코딩 에이전트의 JSON 필터로 쓰기/, /Windows without WSL/, /winget install jqlang\.jq/, /Claude Code/, /OpenCode/, /Codex/, /약 99%/], headline: "jq를 CLI와 코딩 에이전트", category: "Developer Tools", hideSources: true },
+  { label: "fd developer workflow post", slug: "fd-developer-workflow", patterns: [/fd를 CLI와 코딩 에이전트의 파일 탐색기로 쓰기/, /Windows without WSL/, /winget install sharkdp\.fd/, /fd_10\.4\.2_amd64\.deb/, /Claude Code/, /OpenCode/, /Codex/, /파일 후보/], headline: "fd를 CLI와 코딩 에이전트", category: "Developer Tools", hideSources: true },
   { label: "project map small model post", slug: "project-map-small-model-data-flow", patterns: [/작은 모델에게 프로젝트 지도를 건네는 법 1부/, /OpenCode/, /Obsidian/, /CodeGraph/, /ast-grep/, /작은 모델에게 필요한 것은 더 많은 말이 아니라, 더 좋은 입구다\./], headline: "작은 모델에게 프로젝트 지도를 건네는 법 1부", category: "Developer Tools", hideSources: true },
   { label: "GitHub README post", slug: "my-git-pretty", patterns: [/내 git 예쁘게 꾸미기/, /GitHub 운영/, /README/, /Sources/, /GitHub Docs, About READMEs/, /Shields\.io, Endpoint badges/], headline: "내 git 예쁘게 꾸미기", category: "GitHub 운영" },
 ]
