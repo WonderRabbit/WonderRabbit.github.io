@@ -102,6 +102,24 @@ export async function assertProjectMapPostMetadata(page, assert) {
   assert(await page.locator("#sources-heading").count() === 0, "project map post should not render sources-heading.")
 }
 
+export async function assertQwenDesignAgentsPostMetadata(page) {
+  for (const text of [
+    "Developer Tools",
+    "qwen3.6:35b",
+    "qwen3.5:9b",
+    "web-analyst",
+    "change-mapper",
+    "design-architect",
+    "ui-design-review",
+  ]) {
+    await page.getByText(text).first().waitFor({ state: "visible", timeout: 5000 })
+  }
+  await page.getByRole("heading", { name: "Sources" }).waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("OpenCode docs, Agents").first().waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("Ollama library, qwen3.6:35b").first().waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("Ollama library, qwen3.5:9b").first().waitFor({ state: "visible", timeout: 5000 })
+}
+
 export async function assertBlogCategoryTree(page, assert) {
   await page.getByRole("navigation", { name: /category tree/i }).waitFor({ state: "visible", timeout: 5000 })
   const tree = await page.evaluate(() => {

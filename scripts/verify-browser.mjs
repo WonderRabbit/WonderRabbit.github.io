@@ -13,6 +13,7 @@ import {
   assertNoHorizontalOverflow,
   assertNoModelInfo,
   assertProjectMapPostMetadata,
+  assertQwenDesignAgentsPostMetadata,
   assertRipgrepPostMetadata,
   assertWindowsPostMetadata,
 } from "./verify-browser-blog-assertions.mjs"
@@ -70,6 +71,7 @@ const isBundledBrowserMissingError = (error) =>
 const endpointChecks = [
   ["/", /Wonder|blog|AI/i],
   ["/blog/", /wonder-tinker-start|windows10-disable-dgpu-for-general-apps|Blog|블로그/i],
+  ["/blog/opencode-qwen-web-ui-design-agents/", /qwen3\.6:35b|qwen3\.5:9b|web-analyst|md-web-design/i],
   ["/blog/jq-developer-workflow/", /jq|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/fd-developer-workflow/", /fd|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/ripgrep-developer-workflow/", /ripgrep|Windows without WSL|Claude Code|OpenCode|Codex/i],
@@ -86,6 +88,7 @@ const endpointChecks = [
 const pageChecks = [
   ["/", "home.png", /Wonder Tinker/i],
   ["/blog/", "blog.png", /Blog/i],
+  ["/blog/opencode-qwen-web-ui-design-agents/", "post-opencode-qwen-web-ui-design-agents.png", /웹 분석과 UI 설계를 나누기/i],
   ["/blog/jq-developer-workflow/", "post-jq-developer-workflow.png", /Windows without WSL/i],
   ["/blog/fd-developer-workflow/", "post-fd-developer-workflow.png", /Windows without WSL/i],
   ["/blog/project-map-small-model-data-flow/", "post-project-map-small-model-data-flow.png", /작은 모델에게 프로젝트 지도를 건네는 법 1부/i],
@@ -237,6 +240,9 @@ try {
     }
     if (path === "/blog/project-map-small-model-data-flow/") {
       await assertProjectMapPostMetadata(page, assert)
+    }
+    if (path === "/blog/opencode-qwen-web-ui-design-agents/") {
+      await assertQwenDesignAgentsPostMetadata(page)
     }
     if (path.startsWith("/blog/")) {
       await assertNoModelInfo(page, path, assert)
