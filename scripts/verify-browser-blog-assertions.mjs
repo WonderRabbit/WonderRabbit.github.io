@@ -120,6 +120,41 @@ export async function assertQwenDesignAgentsPostMetadata(page) {
   await page.getByText("Ollama library, qwen3.5:9b").first().waitFor({ state: "visible", timeout: 5000 })
 }
 
+export async function assertOrcaPostMetadata(page, assert) {
+  for (const text of [
+    "Developer Tools",
+    "Orca",
+    "Orchestration",
+    "System",
+    "Dark",
+    "Light",
+  ]) {
+    await page.getByText(text, { exact: true }).first().waitFor({ state: "visible", timeout: 5000 })
+  }
+  for (const heading of [
+    "7. Pi를 Orca에 붙이기",
+    "8. Hermes를 Orca에 붙이기",
+    "10. Scheduling: 반복 prompt를 안전하게 예약하기",
+  ]) {
+    await page.getByRole("heading", { name: heading, exact: true }).waitFor({ state: "visible", timeout: 5000 })
+  }
+  await page.getByRole("heading", { name: "Sources" }).waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("Orca Docs, Orchestration").first().waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("Pi Documentation").first().waitFor({ state: "visible", timeout: 5000 })
+  await page.getByText("Hermes Agent Documentation").first().waitFor({ state: "visible", timeout: 5000 })
+  const images = await page.locator("article .prose img").evaluateAll((nodes) =>
+    nodes.map((node) => ({
+      src: node.getAttribute("src") ?? "",
+      naturalWidth: node instanceof HTMLImageElement ? node.naturalWidth : 0,
+    })),
+  )
+  assert(images.length === 7, `Orca post should render 7 screenshots, found ${images.length}.`)
+  assert(
+    images.every((image) => image.src.startsWith("/images/orca-ade/") && image.naturalWidth > 0),
+    "Orca post has a missing or unloaded screenshot.",
+  )
+}
+
 export async function assertBlogCategoryTree(page, assert) {
   await page.getByRole("navigation", { name: /category tree/i }).waitFor({ state: "visible", timeout: 5000 })
   const tree = await page.evaluate(() => {

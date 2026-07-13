@@ -158,13 +158,14 @@ const homeHtml = await routeHtml("home", ["index.html"], [/Wonder Tinker/, /Web 
 const builtCss = await readBuiltCssText()
 assertCatppuccinTheme("built CSS theme", builtCss)
 assertFontLoading(homeHtml)
-assertMatches("home", homeHtml, /fd-developer-workflow/)
+assertMatches("home", homeHtml, /orca-ade-mini-guide/)
 assertMatches("home", homeHtml, /opencode-qwen-web-ui-design-agents/)
 assertMatches("home", homeHtml, /tmux-setup/)
 assertNoModelInfo("home", homeHtml)
 
 const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
   /Blog/,
+  /orca-ade-mini-guide/,
   /opencode-qwen-web-ui-design-agents/,
   /tmux-setup/,
   /ripgrep-developer-workflow/,
@@ -184,6 +185,7 @@ const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
 assertNoModelInfo("blog", blogHtml)
 assertBlogCategoryTree(blogHtml)
 const postChecks = [
+  { label: "Orca ADE mini guide", slug: "orca-ade-mini-guide", patterns: [/Orca ADE 미니 설명서/, /Orchestration/, /System/, /Dark/, /Light/, /Hermes/, /Pi/, /Scheduled automations/, /Sources/], headline: "Orca ADE 미니 설명서", category: "Developer Tools", lang: "ko" },
   { label: "post", slug: "wonder-tinker-start", patterns: [/AI-assisted/, /Sources/, /Astro content collections guide/], headline: "Wonder Tinker", category: "Site notes", lang: "en" },
   { label: "windows dGPU post", slug: "windows10-disable-dgpu-for-general-apps", patterns: [/Windows 10/, /Windows 운영/, /GPU routing/, /DXGI_GPU_PREFERENCE/, /nvidia-smi pmon/, /Sources/], headline: "Windows 10", category: "Windows 운영" },
   { label: "LazyVim Tree-sitter post", slug: "windows10-lazyvim-disable-treesitter", patterns: [/Windows 10/, /PowerShell 7\.6/, /Neovim/, /LazyVim/, /nvim-treesitter/, /Tree-sitter/, /Sources/, /LazyVim Configuration/, /nvim-treesitter README/], headline: "Windows 10 LazyVim", category: "Windows 개발 환경", reject: /model\s*notes/i },
@@ -218,6 +220,7 @@ assertMatches("rss", rss, /<rss\b|<feed\b|<channel\b/i)
 assertMatches("rss", rss, /wonder-tinker-start|Wonder Tinker/)
 assertMatches("rss", rss, /opencode-qwen-web-ui-design-agents/)
 assertMatches("rss", rss, /tmux-setup/)
+assertMatches("rss", rss, /orca-ade-mini-guide/)
 assertMatches("rss", rss, /project-map-small-model-data-flow/)
 assertDoesNotMatch("rss", rss, /Wonder Tinker local publishing note/)
 assert(!/^\s*broken\s*$/i.test(rss), "RSS appears corrupted.")

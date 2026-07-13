@@ -12,6 +12,7 @@ import {
   assertLazyVimPostMetadata,
   assertNoHorizontalOverflow,
   assertNoModelInfo,
+  assertOrcaPostMetadata,
   assertProjectMapPostMetadata,
   assertQwenDesignAgentsPostMetadata,
   assertRipgrepPostMetadata,
@@ -71,6 +72,7 @@ const isBundledBrowserMissingError = (error) =>
 const endpointChecks = [
   ["/", /Wonder|blog|AI/i],
   ["/blog/", /wonder-tinker-start|windows10-disable-dgpu-for-general-apps|Blog|블로그/i],
+  ["/blog/orca-ade-mini-guide/", /Orca ADE 미니 설명서|Orchestration|Hermes|Scheduled automations/i],
   ["/blog/opencode-qwen-web-ui-design-agents/", /qwen3\.6:35b|qwen3\.5:9b|web-analyst|md-web-design/i],
   ["/blog/tmux-setup/", /tmux 3\.7b|tmux-256color|vim-tmux-navigator|status-style|window-status-current-format|LazyVim/i],
   ["/blog/jq-developer-workflow/", /jq|Windows without WSL|Claude Code|OpenCode|Codex/i],
@@ -89,6 +91,7 @@ const endpointChecks = [
 const pageChecks = [
   ["/", "home.png", /Wonder Tinker/i],
   ["/blog/", "blog.png", /Blog/i],
+  ["/blog/orca-ade-mini-guide/", "post-orca-ade-mini-guide.png", /Orca ADE 미니 설명서/i],
   ["/blog/opencode-qwen-web-ui-design-agents/", "post-opencode-qwen-web-ui-design-agents.png", /웹 분석과 UI 설계를 나누기/i],
   ["/blog/tmux-setup/", "post-tmux-setup.png", /tmux 설정 해보기/i],
   ["/blog/jq-developer-workflow/", "post-jq-developer-workflow.png", /Windows without WSL/i],
@@ -245,6 +248,10 @@ try {
     }
     if (path === "/blog/opencode-qwen-web-ui-design-agents/") {
       await assertQwenDesignAgentsPostMetadata(page)
+    }
+    if (path === "/blog/orca-ade-mini-guide/") {
+      await assertOrcaPostMetadata(page, assert)
+      await assertNoHorizontalOverflow(page, path, assert)
     }
     if (path.startsWith("/blog/")) {
       await assertNoModelInfo(page, path, assert)
