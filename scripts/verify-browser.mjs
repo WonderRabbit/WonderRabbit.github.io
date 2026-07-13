@@ -72,7 +72,7 @@ const endpointChecks = [
   ["/", /Wonder|blog|AI/i],
   ["/blog/", /wonder-tinker-start|windows10-disable-dgpu-for-general-apps|Blog|블로그/i],
   ["/blog/opencode-qwen-web-ui-design-agents/", /qwen3\.6:35b|qwen3\.5:9b|web-analyst|md-web-design/i],
-  ["/blog/tmux-setup/", /tmux 3\.7b|tmux-256color|vim-tmux-navigator|LazyVim/i],
+  ["/blog/tmux-setup/", /tmux 3\.7b|tmux-256color|vim-tmux-navigator|status-style|window-status-current-format|LazyVim/i],
   ["/blog/jq-developer-workflow/", /jq|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/fd-developer-workflow/", /fd|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/ripgrep-developer-workflow/", /ripgrep|Windows without WSL|Claude Code|OpenCode|Codex/i],

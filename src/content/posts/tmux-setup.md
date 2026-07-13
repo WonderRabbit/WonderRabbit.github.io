@@ -55,6 +55,7 @@ sources:
 - `Ctrl-a`를 tmux prefix로 쓴다.
 - `|`와 `-`로 현재 경로를 유지한 pane을 연다.
 - `Ctrl-h/j/k/l`로 LazyVim split과 tmux pane을 구분하지 않고 이동한다.
+- 기본 초록색 status line을 어두운 배경과 파란 강조색으로 바꾼다.
 - 설정을 바꾼 뒤 tmux를 재시작하지 않고 다시 읽는다.
 
 확인 시점은 2026년 7월 13일입니다. tmux upstream latest release와 Homebrew stable은 모두 `3.7b`를 가리켰습니다. 배포판 package는 이보다 늦을 수 있으므로 숫자를 맞추려고 소스 빌드하기보다, 먼저 실제 설치 버전을 확인하는 편이 낫습니다.
@@ -128,6 +129,25 @@ bind -r L resize-pane -R 5
 
 # zoom or restore the active pane with prefix + m
 bind m resize-pane -Z
+
+# Catppuccin-inspired status line
+set -g status-position bottom
+set -g status-interval 5
+set -g status-justify left
+set -g status-style "bg=#181825,fg=#cdd6f4"
+set -g status-left-length 40
+set -g status-right-length 80
+set -g status-left "#[bg=#89b4fa,fg=#1e1e2e,bold] #S #[default] "
+set -g status-right "#[fg=#a6adc8]%Y-%m-%d #[fg=#89b4fa,bold]%H:%M "
+set -g window-status-separator ""
+set -g window-status-format "#[fg=#a6adc8] #I:#W "
+set -g window-status-current-format "#[bg=#313244,fg=#89b4fa,bold] #I:#W "
+
+# Match pane borders and tmux messages to the status line
+set -g pane-border-style "fg=#45475a"
+set -g pane-active-border-style "fg=#89b4fa"
+set -g message-style "bg=#313244,fg=#cdd6f4"
+set -g mode-style "bg=#89b4fa,fg=#1e1e2e"
 ```
 
 예전 설정에서 자주 보이는 `screen-256color` 대신 `tmux-256color`를 사용했습니다. 2026년 현재 tmux 공식 example도 `default-terminal`을 `tmux-256color`로 두고, RGB color는 `terminal-features`에 추가합니다. 다만 현재 terminal의 terminfo가 `tmux-256color`를 모르면 색이 오히려 깨질 수 있습니다. 그런 경우 아래 명령으로 항목이 있는지 먼저 확인합니다.
@@ -144,6 +164,51 @@ tmux new -s dev
 ```
 
 이제 `Ctrl-a` 다음에 `|`를 누르면 좌우 pane, `Ctrl-a` 다음에 `-`를 누르면 상하 pane이 열립니다. 두 명령에 `-c "#{pane_current_path}"`를 넣었기 때문에 새 pane은 홈 디렉터리가 아니라 기존 pane의 현재 디렉터리에서 시작합니다.
+
+## status line 꾸미기
+
+tmux를 처음 켰을 때 하단의 초록색 줄이 가장 먼저 눈에 띕니다. 이 영역은 별도 theme plugin 없이 tmux option만으로 바꿀 수 있습니다. 위의 완성 설정에는 다음 block이 이미 포함되어 있습니다.
+
+```text
+# Catppuccin-inspired status line
+set -g status-position bottom
+set -g status-interval 5
+set -g status-justify left
+set -g status-style "bg=#181825,fg=#cdd6f4"
+set -g status-left-length 40
+set -g status-right-length 80
+
+# session name on the left
+set -g status-left "#[bg=#89b4fa,fg=#1e1e2e,bold] #S #[default] "
+
+# date and time on the right
+set -g status-right "#[fg=#a6adc8]%Y-%m-%d #[fg=#89b4fa,bold]%H:%M "
+
+# inactive and active windows in the center list
+set -g window-status-separator ""
+set -g window-status-format "#[fg=#a6adc8] #I:#W "
+set -g window-status-current-format "#[bg=#313244,fg=#89b4fa,bold] #I:#W "
+
+# pane border, command message, and copy-mode selection
+set -g pane-border-style "fg=#45475a"
+set -g pane-active-border-style "fg=#89b4fa"
+set -g message-style "bg=#313244,fg=#cdd6f4"
+set -g mode-style "bg=#89b4fa,fg=#1e1e2e"
+```
+
+왼쪽의 `#S`는 현재 session 이름, window list의 `#I`와 `#W`는 window index와 이름입니다. 오른쪽의 `%Y-%m-%d`와 `%H:%M`은 `strftime` 형식으로 날짜와 시간을 출력합니다. 현재 window만 `#313244` 배경과 `#89b4fa` 글자로 강조해서, 흰색과 초록색을 뒤집는 기본 표시보다 시선이 덜 튑니다.
+
+같은 파란색을 active pane border에도 사용했습니다. 여러 pane을 열었을 때 어느 pane에 입력이 들어가는지 하단 window 표시만 보는 것보다 빠르게 구분할 수 있습니다. `message-style`은 `Ctrl-a r` 뒤에 나오는 reload message, `mode-style`은 copy mode에서 선택한 영역의 색을 맞춥니다.
+
+색상은 전부 앞에서 설정한 RGB terminal 환경을 전제로 합니다. 배경색만 바뀌고 강조색이 이상하다면 status block을 고치기 전에 `tmux-256color`와 `terminal-features` 설정부터 확인합니다.
+
+적용은 기존 reload key로 끝납니다.
+
+```text
+Ctrl-a r
+```
+
+plugin theme를 추가하지 않은 이유도 분명합니다. tmux 자체 option만 쓰면 theme repository의 option 이름이나 release 변경을 따라갈 필요가 없고, 색 하나를 바꾸려고 plugin 전체 설정을 읽을 필요도 없습니다. 나중에 battery, CPU, Git branch 같은 module이 필요해질 때만 status plugin을 검토하면 됩니다.
 
 ## TPM으로 plugin 관리하기
 
@@ -256,7 +321,7 @@ nested tmux에서는 어느 session이 `Ctrl-h/j/k/l`을 처리해야 하는지 
 
 ## 제가 남긴 최소 구성
 
-처음부터 status line theme, session restore, clipboard plugin까지 넣으면 무엇이 기본 tmux 동작인지 알기 어렵습니다. 지금 구성에서 매일 쓰는 키는 여섯 묶음뿐입니다.
+status line은 tmux 자체 option으로 끝냈고, session restore나 clipboard plugin은 넣지 않았습니다. 지금 구성에서 매일 쓰는 키는 여섯 묶음뿐입니다.
 
 | 키 | 동작 |
 | :--- | :--- |
@@ -267,4 +332,4 @@ nested tmux에서는 어느 session이 `Ctrl-h/j/k/l`을 처리해야 하는지 
 | `Ctrl-a m` | 현재 pane zoom 전환 |
 | `Ctrl-a r` | `tmux.conf` 다시 읽기 |
 
-여기까지 안정적으로 동작한 뒤에야 `tmux-resurrect`, `tmux-continuum`, status theme 같은 선택지를 검토할 만합니다. 먼저 tmux의 session/window/pane 모델과 LazyVim의 window 이동을 한 손에 묶어 두면, 나머지 설정은 필요가 생길 때 한 줄씩 추가할 수 있습니다.
+여기까지 안정적으로 동작한 뒤에야 `tmux-resurrect`, `tmux-continuum`이나 status module plugin을 검토할 만합니다. 먼저 tmux의 session/window/pane 모델과 LazyVim의 window 이동을 한 손에 묶어 두면, 나머지 설정은 필요가 생길 때 한 줄씩 추가할 수 있습니다.
