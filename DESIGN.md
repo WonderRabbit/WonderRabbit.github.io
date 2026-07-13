@@ -63,6 +63,8 @@ Wonder Tinker feels like a quiet technical notebook running on Catppuccin: preci
 - Letter spacing stays non-negative.
 - Display type is used only for page titles and the brand wordmark.
 - Mono text is only for metadata, code-like labels, category tree counts, and timestamps.
+- Korean headings, prose, cards, and navigation wrap at word boundaries with `word-break: keep-all`; long unspaced content may fall back to container-safe wrapping.
+- Inline code keeps identifiers intact inside a bounded horizontal scroll area. Article tables stay within the content width, and key/command columns do not split tokens.
 - `BaseLayout.astro` loads Atkinson Hyperlegible, Fraunces, JetBrains Mono, and Noto Sans KR through a single Google Fonts stylesheet with `display=swap`.
 
 ## 4. Spacing & Layout

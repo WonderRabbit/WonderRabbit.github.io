@@ -1,6 +1,6 @@
 ---
-title: "Windows 10 LazyVim에서 Tree-sitter 끄는 위치와 설정"
-description: "PowerShell 7.6에서 LazyVim의 nvim-treesitter를 꺼야 할 때 수정할 Windows 경로, Lua 설정 파일, 전체 비활성화와 기능별 비활성화의 차이를 정리합니다."
+title: "Windows 10 LazyVim에서 Tree‑sitter 끄는 위치와 설정"
+description: "PowerShell 7.6에서 LazyVim의 nvim‑treesitter를 꺼야 할 때 수정할 Windows 경로, Lua 설정 파일, 전체 비활성화와 기능별 비활성화의 차이를 정리합니다."
 published: "2026-06-26"
 draft: false
 category: "Windows 개발 환경"

@@ -160,11 +160,13 @@ assertCatppuccinTheme("built CSS theme", builtCss)
 assertFontLoading(homeHtml)
 assertMatches("home", homeHtml, /fd-developer-workflow/)
 assertMatches("home", homeHtml, /opencode-qwen-web-ui-design-agents/)
+assertMatches("home", homeHtml, /tmux-setup/)
 assertNoModelInfo("home", homeHtml)
 
 const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
   /Blog/,
   /opencode-qwen-web-ui-design-agents/,
+  /tmux-setup/,
   /ripgrep-developer-workflow/,
   /jq-developer-workflow/,
   /fd-developer-workflow/,
@@ -182,7 +184,7 @@ const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
 assertNoModelInfo("blog", blogHtml)
 assertBlogCategoryTree(blogHtml)
 const postChecks = [
-  { label: "post", slug: "wonder-tinker-start", patterns: [/AI-assisted/, /Sources/, /Astro content collections guide/], headline: "Wonder Tinker", category: "Site notes" },
+  { label: "post", slug: "wonder-tinker-start", patterns: [/AI-assisted/, /Sources/, /Astro content collections guide/], headline: "Wonder Tinker", category: "Site notes", lang: "en" },
   { label: "windows dGPU post", slug: "windows10-disable-dgpu-for-general-apps", patterns: [/Windows 10/, /Windows 운영/, /GPU routing/, /DXGI_GPU_PREFERENCE/, /nvidia-smi pmon/, /Sources/], headline: "Windows 10", category: "Windows 운영" },
   { label: "LazyVim Tree-sitter post", slug: "windows10-lazyvim-disable-treesitter", patterns: [/Windows 10/, /PowerShell 7\.6/, /Neovim/, /LazyVim/, /nvim-treesitter/, /Tree-sitter/, /Sources/, /LazyVim Configuration/, /nvim-treesitter README/], headline: "Windows 10 LazyVim", category: "Windows 개발 환경", reject: /model\s*notes/i },
   { label: "ripgrep developer workflow post", slug: "ripgrep-developer-workflow", patterns: [/ripgrep/, /Windows without WSL/, /winget install BurntSushi\.ripgrep\.MSVC/, /Claude Code/, /OpenCode/, /Codex/, /Sources/], headline: "ripgrep", category: "Developer Tools" },
@@ -190,11 +192,13 @@ const postChecks = [
   { label: "fd developer workflow post", slug: "fd-developer-workflow", patterns: [/fd를 CLI와 코딩 에이전트의 파일 탐색기로 쓰기/, /Windows without WSL/, /winget install sharkdp\.fd/, /fd_10\.4\.2_amd64\.deb/, /Claude Code/, /OpenCode/, /Codex/, /파일 후보/], headline: "fd를 CLI와 코딩 에이전트", category: "Developer Tools", hideSources: true },
   { label: "project map small model post", slug: "project-map-small-model-data-flow", patterns: [/작은 모델에게 프로젝트 지도를 건네는 법 1부/, /OpenCode/, /Obsidian/, /CodeGraph/, /ast-grep/, /작은 모델에게 필요한 것은 더 많은 말이 아니라, 더 좋은 입구다\./], headline: "작은 모델에게 프로젝트 지도를 건네는 법 1부", category: "Developer Tools", hideSources: true },
   { label: "OpenCode Qwen design agents post", slug: "opencode-qwen-web-ui-design-agents", patterns: [/OpenCode에서 Qwen 두 모델로 웹 분석과 UI 설계를 나누기/, /qwen3\.6:35b/, /qwen3\.5:9b/, /web-analyst/, /change-mapper/, /md-web-design/, /Sources/], headline: "OpenCode에서 Qwen 두 모델로 웹 분석과 UI 설계를 나누기", category: "Developer Tools" },
+  { label: "tmux setup post", slug: "tmux-setup", patterns: [/tmux 설정 해보기/, /tmux 3\.7b/, /tmux-256color/, /vim-tmux-navigator/, /LazyVim/, /Sources/], headline: "tmux 설정 해보기", category: "Developer Tools", lang: "ko" },
   { label: "GitHub README post", slug: "my-git-pretty", patterns: [/내 git 예쁘게 꾸미기/, /GitHub 운영/, /README/, /Sources/, /GitHub Docs, About READMEs/, /Shields\.io, Endpoint badges/], headline: "내 git 예쁘게 꾸미기", category: "GitHub 운영" },
 ]
 
 for (const post of postChecks) {
   const html = await routeHtml(post.label, ["blog", post.slug, "index.html"], post.patterns)
+  assertMatches(`${post.label} language`, html, new RegExp(`<article\\b[^>]*\\blang="${post.lang ?? "ko"}"`, "i"))
   assertNoModelInfo(post.label, html)
   if (post.reject) assertDoesNotMatch(post.label, html, post.reject)
   if (post.hideSources) assertNoSourcesPanel(post.label, html)
@@ -213,6 +217,7 @@ const rss = await readText(await assertFile("rss.xml"))
 assertMatches("rss", rss, /<rss\b|<feed\b|<channel\b/i)
 assertMatches("rss", rss, /wonder-tinker-start|Wonder Tinker/)
 assertMatches("rss", rss, /opencode-qwen-web-ui-design-agents/)
+assertMatches("rss", rss, /tmux-setup/)
 assertMatches("rss", rss, /project-map-small-model-data-flow/)
 assertDoesNotMatch("rss", rss, /Wonder Tinker local publishing note/)
 assert(!/^\s*broken\s*$/i.test(rss), "RSS appears corrupted.")

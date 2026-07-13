@@ -64,7 +64,7 @@ const jsonLd = JSON.stringify(blogPosting).replaceAll("<", "\\u003c")
 >
   <script is:inline slot="head" type="application/ld+json" set:html={jsonLd}></script>
   <main id="main" class="site-shell page-stack">
-    <article class="post-layout">
+    <article class="post-layout" lang={post.data.lang}>
       <header class="post-header">
         <p class="eyebrow">Build note</p>
         <h1>{post.data.title}</h1>

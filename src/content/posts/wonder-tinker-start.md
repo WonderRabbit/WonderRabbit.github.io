@@ -8,6 +8,7 @@ tags:
   - Astro
   - Content collections
   - AI disclosure
+lang: en
 aiAssisted: true
 sources:
   - title: "Astro content collections guide"

@@ -18,6 +18,7 @@ const posts = defineCollection({
     draft: z.boolean().default(false),
     category: z.string().min(1),
     tags: z.array(z.string().min(1)).min(1),
+    lang: z.enum(["ko", "en"]).default("ko"),
     aiAssisted: z.boolean(),
     showSources: z.boolean().default(true),
     sources: z.array(sourceSchema).min(1),
