@@ -1,38 +1,35 @@
 ---
 /**
- * Google Analytics 4 (gtag.js) 추적 컴포넌트
+ * Google Tag Manager (GTM) 추적 컴포넌트
  *
  * 설정 방법:
- * 1. https://analytics.google.com 에서 GA4 속성을 생성한다
- * 2. 측정 ID(형식: G-XXXXXXXXXX)를 복사한다
- * 3. 아래 GA_MEASUREMENT_ID 값을 실제 ID로 교체한다
+ * 1. https://tagmanager.google.com 에서 컨테이너를 만든다
+ * 2. 컨테이너 ID(형식: GTM-XXXXXXX)를 복사한다
+ * 3. 아래 GTM_CONTAINER_ID 값을 실제 ID로 교체한다
  *
- * 이 컴포넌트는 운영(production) 빌드에서만, 실제 측정 ID가 설정되었을 때만
- * 로드된다. 개발 환경에서는 로드되지 않아 개발 중 방문이 통계에 섞이지 않는다.
+ * 이 컴포넌트는 운영(production) 빌드에서만 로드된다.
+ * 개발 환경에서는 로드되지 않아 개발 중 방문이 통계에 섞이지 않는다.
+ * GTM 컨테이너 안에 GA4 등 측정 태그를 설정하면 데이터가 수집된다.
  */
 
-// TODO: https://analytics.google.com 에서 받은 GA4 측정 ID로 교체한다
-const GA_MEASUREMENT_ID = "G-XXXXXXXXXX"
+// Google Tag Manager 컨테이너 ID (https://tagmanager.google.com)
+const GTM_CONTAINER_ID: string = "GTM-NFZV3PF4"
 
-// 실제 ID가 설정되어 있고 운영 빌드일 때만 활성화
-const isEnabled =
-  GA_MEASUREMENT_ID !== "G-XXXXXXXXXX" && import.meta.env.PROD
+// 운영 빌드일 때만 활성화
+const isEnabled = GTM_CONTAINER_ID !== "" && import.meta.env.PROD
 ---
 
 {isEnabled && (
-  <Fragment>
-    <script
-      is:inline
-      async
-      src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-    />
-    <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", GA_MEASUREMENT_ID);
-    </script>
-  </Fragment>
+  <script is:inline define:vars={{ GTM_CONTAINER_ID }}>
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != "dataLayer" ? "&l=" + l : "";
+      j.async = true;
+      j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, "script", "dataLayer", GTM_CONTAINER_ID);
+  </script>
 )}
