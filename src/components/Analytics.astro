@@ -1,0 +1,38 @@
+---
+/**
+ * Google Analytics 4 (gtag.js) 추적 컴포넌트
+ *
+ * 설정 방법:
+ * 1. https://analytics.google.com 에서 GA4 속성을 생성한다
+ * 2. 측정 ID(형식: G-XXXXXXXXXX)를 복사한다
+ * 3. 아래 GA_MEASUREMENT_ID 값을 실제 ID로 교체한다
+ *
+ * 이 컴포넌트는 운영(production) 빌드에서만, 실제 측정 ID가 설정되었을 때만
+ * 로드된다. 개발 환경에서는 로드되지 않아 개발 중 방문이 통계에 섞이지 않는다.
+ */
+
+// TODO: https://analytics.google.com 에서 받은 GA4 측정 ID로 교체한다
+const GA_MEASUREMENT_ID = "G-XXXXXXXXXX"
+
+// 실제 ID가 설정되어 있고 운영 빌드일 때만 활성화
+const isEnabled =
+  GA_MEASUREMENT_ID !== "G-XXXXXXXXXX" && import.meta.env.PROD
+---
+
+{isEnabled && (
+  <Fragment>
+    <script
+      is:inline
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+    />
+    <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", GA_MEASUREMENT_ID);
+    </script>
+  </Fragment>
+)}

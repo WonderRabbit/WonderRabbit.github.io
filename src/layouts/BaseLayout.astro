@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css"
+import Analytics from "../components/Analytics.astro"
 
 const {
   title,
@@ -49,6 +50,7 @@ interface Props {
     <meta property="og:url" content={canonicalUrl} />
     <title>{title}</title>
     <slot name="head" />
+    <Analytics />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

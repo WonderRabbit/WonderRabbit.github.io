@@ -12,18 +12,19 @@ const description = "Privacy posture for the static Wonder Tinker site."
         <p class="eyebrow">Privacy</p>
         <h1>Privacy</h1>
         <p class="lede">
-          Wonder Tinker is a static GitHub Pages site. No analytics package, tracking
-          script, tracking pixel, comments system, account flow, payment flow, or
-          newsletter backend is installed by default.
+          Wonder Tinker is a static GitHub Pages site. Google Analytics 4 is installed
+          for visitor measurement. No tracking pixel, comments system, account flow,
+          payment flow, or newsletter backend is installed.
         </p>
       </header>
       <div class="prose">
         <h2>What the site collects</h2>
         <p>
           This repository does not add application code that collects visitor names,
-          email addresses, cookies, local storage identifiers, or browser fingerprints.
+          email addresses, local storage identifiers, or browser fingerprints.
           Reading a page does not create an account, subscribe the visitor, or send data
-          to a project-owned backend.
+          to a project-owned backend. Google Analytics 4 uses cookies for visitor
+          measurement; see "Analytics and tracking" below for details.
         </p>
         <p>
           GitHub Pages or a visitor's network provider may keep standard delivery logs
@@ -39,15 +40,31 @@ const description = "Privacy posture for the static Wonder Tinker site."
 
         <h2>Analytics and tracking</h2>
         <p>
-          No analytics package is installed by default. No tracking script, tracking
-          pixel, tag manager, advertising SDK, or session replay script is included by
-          default.
+          The site uses <strong>Google Analytics 4</strong> (gtag.js) to measure visitor
+          traffic and traffic sources. The tracking script loads on every page in
+          production builds and sends data to Google's servers.
         </p>
         <p>
-          Search Console-style ownership verification may be added later because it
-          does not require visitor tracking script code. If a visitor-measurement tool
-          is added, this page must be updated first with the tool name, data collected,
-          opt-out behavior, and removal instructions.
+          <strong>Data collected:</strong> page URLs visited, referrer / traffic source,
+          approximate geographic region (country and city derived from IP address, which
+          Google anonymizes at the network edge), device type, browser, and session
+          timing. First-party cookies distinguish unique visitors and sessions.
+        </p>
+        <p>
+          <strong>Opt-out:</strong> install the official
+          <a href="https://tools.google.com/dlpage/gaoptout">Google Analytics opt-out
+          browser add-on</a>, use a browser with built-in tracking protection, or block
+          <code>googletagmanager.com</code> and <code>google-analytics.com</code>.
+        </p>
+        <p>
+          <strong>Removal:</strong> replace the Measurement ID in
+          <code>src/components/Analytics.astro</code> with the placeholder
+          <code>G-XXXXXXXXXX</code> and rebuild the site. The script will not load until
+          a real ID is restored.
+        </p>
+        <p>
+          No tracking pixel, tag manager, advertising SDK, or session replay script is
+          included.
         </p>
 
         <h2>Content privacy</h2>
@@ -61,8 +78,9 @@ const description = "Privacy posture for the static Wonder Tinker site."
         <p>
           A future custom-domain change must configure GitHub Pages DNS, add
           <code>public/CNAME</code>, update Astro <code>site</code> and canonical URL
-          assumptions, rebuild the site, and confirm again that no analytics or
-          tracking script was added during the domain change.
+          assumptions, rebuild the site, and confirm that the analytics configuration
+          in <code>src/components/Analytics.astro</code> is intentional and unchanged
+          during the domain change.
         </p>
       </div>
     </article>
