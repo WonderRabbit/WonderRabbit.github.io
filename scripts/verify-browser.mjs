@@ -75,6 +75,7 @@ const endpointChecks = [
   ["/blog/orca-ade-mini-guide/", /Orca ADE 미니 설명서|Orchestration|Hermes|Scheduled automations/i],
   ["/blog/opencode-qwen-web-ui-design-agents/", /qwen3\.6:35b|qwen3\.5:9b|web-analyst|md-web-design/i],
   ["/blog/tmux-setup/", /tmux 3\.7b|tmux-256color|vim-tmux-navigator|status-style|window-status-current-format|LazyVim/i],
+  ["/blog/obsidian-cli-agent-workflow/", /Obsidian CLI로 볼트를 관리하는 법|search:context|property:set|workspace-write/i],
   ["/blog/jq-developer-workflow/", /jq|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/fd-developer-workflow/", /fd|Windows without WSL|Claude Code|OpenCode|Codex/i],
   ["/blog/ripgrep-developer-workflow/", /ripgrep|Windows without WSL|Claude Code|OpenCode|Codex/i],
@@ -94,6 +95,7 @@ const pageChecks = [
   ["/blog/orca-ade-mini-guide/", "post-orca-ade-mini-guide.png", /Orca ADE 미니 설명서/i],
   ["/blog/opencode-qwen-web-ui-design-agents/", "post-opencode-qwen-web-ui-design-agents.png", /웹 분석과 UI 설계를 나누기/i],
   ["/blog/tmux-setup/", "post-tmux-setup.png", /tmux 설정 해보기/i],
+  ["/blog/obsidian-cli-agent-workflow/", "post-obsidian-cli-agent-workflow.png", /Obsidian CLI로 볼트를 관리하는 법/i],
   ["/blog/jq-developer-workflow/", "post-jq-developer-workflow.png", /Windows without WSL/i],
   ["/blog/fd-developer-workflow/", "post-fd-developer-workflow.png", /Windows without WSL/i],
   ["/blog/project-map-small-model-data-flow/", "post-project-map-small-model-data-flow.png", /작은 모델에게 프로젝트 지도를 건네는 법 1부/i],
@@ -251,6 +253,9 @@ try {
     }
     if (path === "/blog/orca-ade-mini-guide/") {
       await assertOrcaPostMetadata(page, assert)
+      await assertNoHorizontalOverflow(page, path, assert)
+    }
+    if (path === "/blog/obsidian-cli-agent-workflow/") {
       await assertNoHorizontalOverflow(page, path, assert)
     }
     if (path.startsWith("/blog/")) {

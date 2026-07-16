@@ -159,8 +159,8 @@ const builtCss = await readBuiltCssText()
 assertCatppuccinTheme("built CSS theme", builtCss)
 assertFontLoading(homeHtml)
 assertMatches("home", homeHtml, /orca-ade-mini-guide/)
-assertMatches("home", homeHtml, /opencode-qwen-web-ui-design-agents/)
 assertMatches("home", homeHtml, /tmux-setup/)
+assertMatches("home", homeHtml, /obsidian-cli-agent-workflow/)
 assertNoModelInfo("home", homeHtml)
 
 const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
@@ -168,6 +168,7 @@ const blogHtml = await routeHtml("blog", ["blog", "index.html"], [
   /orca-ade-mini-guide/,
   /opencode-qwen-web-ui-design-agents/,
   /tmux-setup/,
+  /obsidian-cli-agent-workflow/,
   /ripgrep-developer-workflow/,
   /jq-developer-workflow/,
   /fd-developer-workflow/,
@@ -195,6 +196,7 @@ const postChecks = [
   { label: "project map small model post", slug: "project-map-small-model-data-flow", patterns: [/작은 모델에게 프로젝트 지도를 건네는 법 1부/, /OpenCode/, /Obsidian/, /CodeGraph/, /ast-grep/, /작은 모델에게 필요한 것은 더 많은 말이 아니라, 더 좋은 입구다\./], headline: "작은 모델에게 프로젝트 지도를 건네는 법 1부", category: "Developer Tools", hideSources: true },
   { label: "OpenCode Qwen design agents post", slug: "opencode-qwen-web-ui-design-agents", patterns: [/OpenCode에서 Qwen 두 모델로 웹 분석과 UI 설계를 나누기/, /qwen3\.6:35b/, /qwen3\.5:9b/, /web-analyst/, /change-mapper/, /md-web-design/, /Sources/], headline: "OpenCode에서 Qwen 두 모델로 웹 분석과 UI 설계를 나누기", category: "Developer Tools" },
   { label: "tmux setup post", slug: "tmux-setup", patterns: [/tmux 설정 해보기/, /tmux 3\.7b/, /tmux-256color/, /vim-tmux-navigator/, /status-style/, /window-status-current-format/, /#181825/, /LazyVim/, /Sources/], headline: "tmux 설정 해보기", category: "Developer Tools", lang: "ko" },
+  { label: "Obsidian CLI agent workflow post", slug: "obsidian-cli-agent-workflow", patterns: [/Obsidian CLI로 볼트를 관리하는 법/, /Settings/, /search:context/, /property:set/, /OpenCode/, /Claude Code/, /Codex/, /AGENTS\.md/, /workspace-write/, /Sources/], headline: "Obsidian CLI로 볼트를 관리하는 법", category: "Developer Tools", lang: "ko" },
   { label: "GitHub README post", slug: "my-git-pretty", patterns: [/내 git 예쁘게 꾸미기/, /GitHub 운영/, /README/, /Sources/, /GitHub Docs, About READMEs/, /Shields\.io, Endpoint badges/], headline: "내 git 예쁘게 꾸미기", category: "GitHub 운영" },
 ]
 
@@ -220,6 +222,7 @@ assertMatches("rss", rss, /<rss\b|<feed\b|<channel\b/i)
 assertMatches("rss", rss, /wonder-tinker-start|Wonder Tinker/)
 assertMatches("rss", rss, /opencode-qwen-web-ui-design-agents/)
 assertMatches("rss", rss, /tmux-setup/)
+assertMatches("rss", rss, /obsidian-cli-agent-workflow/)
 assertMatches("rss", rss, /orca-ade-mini-guide/)
 assertMatches("rss", rss, /project-map-small-model-data-flow/)
 assertDoesNotMatch("rss", rss, /Wonder Tinker local publishing note/)
