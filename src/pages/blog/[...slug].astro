@@ -61,6 +61,7 @@ const jsonLd = JSON.stringify(blogPosting).replaceAll("<", "\\u003c")
   description={post.data.description}
   canonicalPath={canonicalPath}
   pageType="article"
+  lang={post.data.lang}
 >
   <script is:inline slot="head" type="application/ld+json" set:html={jsonLd}></script>
   <main id="main" class="site-shell page-stack">

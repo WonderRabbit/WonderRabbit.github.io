@@ -202,6 +202,7 @@ const postChecks = [
 
 for (const post of postChecks) {
   const html = await routeHtml(post.label, ["blog", post.slug, "index.html"], post.patterns)
+  assertMatches(`${post.label} document language`, html, new RegExp(`<html\\b[^>]*\\blang="${post.lang ?? "ko"}"`, "i"))
   assertMatches(`${post.label} language`, html, new RegExp(`<article\\b[^>]*\\blang="${post.lang ?? "ko"}"`, "i"))
   assertNoModelInfo(post.label, html)
   if (post.reject) assertDoesNotMatch(post.label, html, post.reject)
