@@ -26,6 +26,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props
 const { Content } = await render(post)
 const displayTitle = post.data.title
+  .replaceAll("볼트를 관리하는 법", "볼트를\u00a0관리하는\u00a0법")
   .replaceAll("Claude Code", "Claude\u00a0Code")
   .replaceAll("밀착 가이드", "밀착\u00a0가이드")
 const displayDescription = post.data.description.replaceAll("Claude Code", "Claude\u00a0Code")

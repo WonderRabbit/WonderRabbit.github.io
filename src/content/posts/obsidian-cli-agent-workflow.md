@@ -63,7 +63,7 @@ Obsidian 볼트를 코딩 에이전트에게 맡길 때 가장 먼저 정할 �
 
 ## 먼저 알아둘 경계
 
-공식 Obsidian CLI는 독립적인 headless Markdown 도구가 아니다. 데스크톱 Obsidian 앱이 실행 중이어야 하고, 앱이 꺼진 상태에서 첫 명령을 실행하면 앱을 시작한다. GUI 없이 서버에서 Sync만 돌리는 기능은 별도의 Obsidian Headless 경로다.
+공식 Obsidian CLI는 독립적인 headless Markdown 도구가 아니다. 데스크톱 Obsidian 앱이 실행 중이어야 하고, 앱이 꺼진 상태에서 첫 명령을 실행하면 앱을 시작한다. GUI 없이 서버에서 Sync만 돌리는 기능은 별도의 Obsidian Headless 경로다.
 
 이 차이가 중요한 이유는 두 가지다.
 
@@ -546,7 +546,7 @@ git -C "/Users/me/Documents/Work Notes" diff --stat
 | 명령은 되지만 규칙을 안 따른다 | AGENTS.md/CLAUDE.md load 상태 | 실행 위치와 instruction chain 확인 |
 | 이동 후 링크가 깨진다 | Automatically update internal links | 설정 확인 후 `unresolved verbose` 실행 |
 | 자동화가 멈추지 않고 넓게 수정한다 | permission과 batch 크기 | 기본 ask, 최대 파일 수, 승인 checkpoint 추가 |
-| 서버에서 GUI 없이 실패한다 | desktop CLI 사용 여부 | Obsidian Headless 또는 file-backed script 검토 |
+| 서버에서 GUI 없이 실패한다 | desktop CLI 사용 여부 | Obsidian Headless 또는 file-backed script 검토 |
 
 ## 처음 적용할 체크리스트
 
