@@ -19,6 +19,15 @@
   color: var(--text-primary);
 }
 
+.post-header h1 {
+  text-wrap: balance;
+}
+
+.lede,
+.prose p {
+  text-wrap: pretty;
+}
+
 .prose p,
 .prose ul,
 .prose ol {

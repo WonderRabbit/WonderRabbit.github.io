@@ -25,6 +25,10 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props
 const { Content } = await render(post)
+const displayTitle = post.data.title
+  .replaceAll("Claude Code", "Claude\u00a0Code")
+  .replaceAll("밀착 가이드", "밀착\u00a0가이드")
+const displayDescription = post.data.description.replaceAll("Claude Code", "Claude\u00a0Code")
 const formatDate = (date: Date) =>
   new Intl.DateTimeFormat("en", { dateStyle: "long", timeZone: "UTC" }).format(date)
 const baseUrl = new URL(import.meta.env.BASE_URL, Astro.site ?? "https://wonderrabbit.github.io")
@@ -67,10 +71,10 @@ const jsonLd = JSON.stringify(blogPosting).replaceAll("<", "\\u003c")
   <main id="main" class="site-shell page-stack">
     <article class="post-layout" lang={post.data.lang}>
       <header class="post-header">
-        <p class="eyebrow">Build note</p>
-        <h1>{post.data.title}</h1>
-        <p class="lede">{post.data.description}</p>
-        <div class="article-row__meta">
+        <p class="eyebrow" lang="en">Build note</p>
+        <h1>{displayTitle}</h1>
+        <p class="lede">{displayDescription}</p>
+        <div class="article-row__meta" lang="en">
           <span>Published <time datetime={post.data.published.toISOString()}>{formatDate(post.data.published)}</time></span>
           {
             post.data.updated && (
@@ -80,7 +84,7 @@ const jsonLd = JSON.stringify(blogPosting).replaceAll("<", "\\u003c")
           <span>{post.data.category}</span>
           {post.data.aiAssisted && <span>AI-assisted</span>}
         </div>
-        <div class="chip-list" aria-label="Post topics">
+        <div class="chip-list" aria-label="Post topics" lang="en">
           {post.data.tags.map((tag) => <span class="topic-chip">{tag}</span>)}
         </div>
       </header>
@@ -91,7 +95,7 @@ const jsonLd = JSON.stringify(blogPosting).replaceAll("<", "\\u003c")
 
       {
         post.data.showSources && (
-          <section class="meta-panel" aria-labelledby="sources-heading">
+          <section class="meta-panel" aria-labelledby="sources-heading" lang="en">
             <h2 id="sources-heading">Sources</h2>
             <ul class="source-list">
               {post.data.sources.map((source) => (

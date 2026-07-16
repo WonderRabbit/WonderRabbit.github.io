@@ -55,9 +55,9 @@ interface Props {
     <Analytics />
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main" lang="en">Skip to content</a>
     <header class="site-header">
-      <nav class="site-nav" aria-label="Primary navigation">
+      <nav class="site-nav" aria-label="Primary navigation" lang="en">
         <a class="site-nav__brand" href={siteHref("/")}>Wonder Tinker</a>
         <div class="site-nav__links">
           {navItems.map((item) => <a href={siteHref(item.href)}>{item.label}</a>)}
@@ -65,7 +65,7 @@ interface Props {
       </nav>
     </header>
     <slot />
-    <footer class="site-footer">
+    <footer class="site-footer" lang="en">
       <p>Wonder Tinker publishes Web and AI notes with visible dates, sources, and review boundaries.</p>
       <nav aria-label="Footer navigation">
         <a href={siteHref("/editorial-policy/")}>Editorial policy</a>
