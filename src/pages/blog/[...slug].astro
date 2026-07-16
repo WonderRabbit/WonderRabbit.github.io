@@ -96,13 +96,13 @@ const jsonLd = JSON.stringify(blogPosting).replaceAll("<", "\\u003c")
 
       {
         post.data.showSources && (
-          <section class="meta-panel" aria-labelledby="sources-heading" lang="en">
-            <h2 id="sources-heading">Sources</h2>
+          <section class="meta-panel" aria-labelledby="sources-heading">
+            <h2 id="sources-heading" lang="en">Sources</h2>
             <ul class="source-list">
               {post.data.sources.map((source) => (
                 <li>
-                  <a href={source.url}>{source.title}</a>
-                  <span>Accessed {formatDate(source.accessed)}</span>
+                  <a href={source.url} lang={/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(source.title) ? "ko" : "en"}>{source.title}</a>
+                  <span lang="en">Accessed {formatDate(source.accessed)}</span>
                 </li>
               ))}
             </ul>

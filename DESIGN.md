@@ -41,7 +41,7 @@ Wonder Tinker feels like a quiet technical notebook running on Catppuccin: preci
 | Level | Size | Weight | Line Height | Tracking | Usage |
 |-------|------|--------|-------------|----------|-------|
 | Display | 44px / 2.75rem | 650 | 1.08 | 0 | Site title on wide screens |
-| H1 | 34px / 2.125rem | 650 | 1.15 | 0 | Page title |
+| H1 | 34–44px / `clamp(2.125rem, 1.75rem + 1.4vw, 2.75rem)` | 650 | 1.08 | 0 | Page and article title |
 | H2 | 26px / 1.625rem | 620 | 1.25 | 0 | Section headers |
 | H3 | 20px / 1.25rem | 620 | 1.35 | 0 | Article titles |
 | Body/lg | 18px / 1.125rem | 400 | 1.65 | 0 | Lead copy |
