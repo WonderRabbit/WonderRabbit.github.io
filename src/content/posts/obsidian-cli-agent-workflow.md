@@ -51,7 +51,7 @@ sources:
     accessed: "2026-07-16"
 ---
 
-Obsidian 볼트를 코딩 에이전트에게 맡길 때 가장 먼저 정할 것은 도구가 아니라 **쓰기 경계**다. Markdown 본문은 파일로 직접 읽고 고칠 수 있지만, 속성 타입, 내부 링크 갱신, Daily notes, Bases, File Recovery, 플러그인 명령처럼 Obsidian이 해석해야 하는 작업은 공식 `obsidian` CLI를 통과시키는 편이 낫다.
+Obsidian 볼트를 코딩 에이전트에게 맡길 때 가장 먼저 정할 것은 도구가 아니라 **쓰기 경계**다. Markdown 본문은 파일로 직접 읽고 고칠 수 있지만, 속성 타입, 내부 링크 갱신, Daily notes, Bases, File Recovery, 플러그인 명령처럼 Obsidian이 해석해야 하는 작업은 공식 `obsidian` CLI를 통과시키는 편이 낫다.
 
 내가 권하는 운영 방식은 다음 세 줄이다.
 
@@ -63,7 +63,7 @@ Obsidian 볼트를 코딩 에이전트에게 맡길 때 가장 먼저 정할 것
 
 ## 먼저 알아둘 경계
 
-공식 Obsidian CLI는 독립적인 headless Markdown 도구가 아니다. 데스크톱 Obsidian 앱이 실행 중이어야 하고, 앱이 꺼진 상태에서 첫 명령을 실행하면 앱을 시작한다. GUI 없이 서버에서 Sync만 돌리는 기능은 별도의 Obsidian Headless 경로다.
+공식 Obsidian CLI는 독립적인 headless Markdown 도구가 아니다. 데스크톱 Obsidian 앱이 실행 중이어야 하고, 앱이 꺼진 상태에서 첫 명령을 실행하면 앱을 시작한다. GUI 없이 서버에서 Sync만 돌리는 기능은 별도의 Obsidian Headless 경로다.
 
 이 차이가 중요한 이유는 두 가지다.
 
