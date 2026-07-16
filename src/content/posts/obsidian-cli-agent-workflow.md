@@ -51,7 +51,7 @@ sources:
     accessed: "2026-07-16"
 ---
 
-Obsidian 볼트를 코딩 에이전트에게 맡길 때 가장 먼저 정할 것은 도구가 아니라 **쓰기 경계**다. Markdown 본문은 파일로 직접 읽고 고칠 수 있지만, 속성 타입, 내부 링크 갱신, Daily notes, Bases, File Recovery, 플러그인 명령처럼 Obsidian이 해석해야 하는 작업은 공식 `obsidian` CLI를 통과시키는 편이 낫다.
+Obsidian 볼트를 코딩 에이전트에게 맡길 때 가장 먼저 정할 것은 도구가 아니라 **쓰기 경계**다. Markdown 본문은 파일로 직접 읽고 고칠 수 있지만, 속성 타입, 내부 링크 갱신, Daily notes, Bases, File Recovery, 플러그인 명령처럼 Obsidian이 해석해야 하는 작업은 공식 `obsidian` CLI를 통과시키는 편이 낫다.
 
 내가 권하는 운영 방식은 다음 세 줄이다.
 
@@ -517,7 +517,7 @@ obsidian vault="Work Notes" search query="statuz" format=json
 
 ## 13단계: Git과 백업 붙이기
 
-Obsidian CLI의 File Recovery와 Sync history는 유용하지만 Git commit을 대신하지 않는다. 중요한 vault는 변경 전후를 텍스트 diff로 확인할 수 있게 Git이나 별도 백업을 붙인다.
+Obsidian CLI의 File Recovery와 Sync history는 유용하지만 Git commit을 대신하지 않는다. 중요한 vault는 변경 전후를 텍스트 diff로 확인할 수 있게 Git이나 별도 백업을 붙인다.
 
 ```bash
 git -C "/Users/me/Documents/Work Notes" status --short
